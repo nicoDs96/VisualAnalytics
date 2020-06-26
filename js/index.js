@@ -2,8 +2,8 @@ d3.select('body')
     .append('h1')
     .text("HelloD3");
 var margin = {top: 20, right: 20, bottom: 30, left: 40};
-var width = 960 - margin.left - margin.right;
-var height = 500 - margin.top - margin.bottom;
+var width = 900 - margin.left - margin.right;
+var height = 800 - margin.top - margin.bottom;
 var svg = d3.select("body").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -11,77 +11,64 @@ var svg = d3.select("body").append("svg")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
-var canvas = document.querySelector("canvas"),
-    context = canvas.getContext("2d"),
-    width = canvas.width,
-    height = canvas.height;
 
-var simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody())
-    .force("center", d3.forceCenter(width / 2, height / 2));
+(async()=> {
+    console.log("Starting drawing graph");
 
-d3.json("datasets/Interactome_graph.json", function(error, graph) {
-    if (error) throw error;
+    await d3.json("interactome_small.json", (error, data) => {
+        console.log(data)
+        //init links
+        var link = svg.selectAll("line")
+            .data(data.links)
+            .enter()
+            .append("line")
+            .style("stroke", "#aaa");
 
-    simulation
-        .nodes(graph.nodes)
-        .on("tick", ticked);
+        console.log("mariaritaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        //init nodes
+        var node = svg.selectAll("circle")
+            .data(data.nodes)
+            .enter()
+            .append("circle")
+            .attr("r", 3)
+            .style("fill", "#7fdbff");
 
-    simulation.force("link")
-        .links(graph.links);
+        //apply forces to the graph
+        var simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
+            .force("link", d3.forceLink()                               // This force provides links between nodes
+                .id(function (d) {
+                    return d.id;
+                })                     // This provide  the id of a node
+                .links(data.links)                                    // and this the list of links
+            )
+            .force("charge", d3.forceManyBody().strength(-10))         // This adds repulsion between nodes. -400 is the repulsion strength TODO: user can vary -400 to adjust layout
+            .force("center", d3.forceCenter(width / 2, height / 2))     // This force attracts nodes to the center of the svg area
+            .on("end", ticked);
 
-    d3.select(canvas)
-        .call(d3.drag()
-            .container(canvas)
-            .subject(dragsubject)
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended));
+        // This function is run at each iteration of the force algorithm, updating the nodes position.
+        function ticked() {
+            link
+                .attr("x1", function (d) {
+                    return Math.max(0, Math.min(width, d.source.x));//d.source.x;
+                })
+                .attr("y1", function (d) {
+                    return Math.max(0, Math.min(width, d.source.y));//d.source.y;
+                })
+                .attr("x2", function (d) {
+                    return Math.max(0, Math.min(width, d.target.x));//d.target.x;
+                })
+                .attr("y2", function (d) {
+                    return Math.max(0, Math.min(width, d.target.y));//d.target.y;
+                });
 
-    function ticked() {
-        context.clearRect(0, 0, width, height);
+            node
+                .attr("cx", function (d) {
+                    return Math.max(0, Math.min(width, d.x));//d.x ;
+                })
+                .attr("cy", function (d) {
+                    return Math.max(0, Math.min(width, d.y));//d.y ;
+                });
+        }
 
-        context.beginPath();
-        graph.links.forEach(drawLink);
-        context.strokeStyle = "#aaa";
-        context.stroke();
-
-        context.beginPath();
-        graph.nodes.forEach(drawNode);
-        context.fill();
-        context.strokeStyle = "#fff";
-        context.stroke();
-    }
-
-    function dragsubject() {
-        return simulation.find(d3.event.x, d3.event.y);
-    }
-});
-
-function dragstarted() {
-    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-    d3.event.subject.fx = d3.event.subject.x;
-    d3.event.subject.fy = d3.event.subject.y;
-}
-
-function dragged() {
-    d3.event.subject.fx = d3.event.x;
-    d3.event.subject.fy = d3.event.y;
-}
-
-function dragended() {
-    if (!d3.event.active) simulation.alphaTarget(0);
-    d3.event.subject.fx = null;
-    d3.event.subject.fy = null;
-}
-
-function drawLink(d) {
-    context.moveTo(d.source.x, d.source.y);
-    context.lineTo(d.target.x, d.target.y);
-}
-
-function drawNode(d) {
-    context.moveTo(d.x + 3, d.y);
-    context.arc(d.x, d.y, 3, 0, 2 * Math.PI);
-}
+    });
+})();
