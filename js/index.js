@@ -65,7 +65,6 @@ drag = simulation => {
         var node = svg.selectAll("circle")
             .data(data.nodes)
             .enter()
-
             .append("circle")
             .attr("r", 3)
             .style("fill", "#7fdbff")
