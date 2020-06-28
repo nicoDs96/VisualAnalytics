@@ -41,6 +41,15 @@ var useful_genes_list = new Set([]);
 
 var t0,t1;
 
+var margin = {top: 20, right: 20, bottom: 30, left: 40};
+var width = 800 - margin.left - margin.right;
+var height = 800 - margin.top - margin.bottom;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("viewBox", [-width / 2, -height / 2, width, height]);
+
 (async ()=>{
 
     /*
@@ -136,26 +145,41 @@ var t0,t1;
         */
 
         //select basic disease TODO: replace with user input selector
-        var disease = disease_gene_mapping[0].Diseases;
-        var disease_genes = new Set( disease_gene_mapping[0].Genes.split(",") );
+        var simulated_input_array = [];
+        simulated_input_array.push(
+            disease_gene_mapping[0],
+            disease_gene_mapping[1],
+            disease_gene_mapping[2],
+            disease_gene_mapping[3],
+            disease_gene_mapping[4],
+        );
+        var full_graph = {}
+        full_graph.nodes = [];
+        full_graph.links = [];
 
-        console.log("disease_genes"); //debug infos
-        console.log(disease_genes);
-        t0 = performance.now();
+        for(let i = 0; i < simulated_input_array.length; i++ ){
+            var disease = simulated_input_array[i].Diseases;
+            var disease_genes = new Set( simulated_input_array[i].Genes.split(",") );
 
-        var filtered_interactome_graph = filter_interactome_graph(disease_genes);
-        filtered_interactome_graph.disease = disease
+            t0 = performance.now();
+            let filtered_interactome_graph = filter_interactome_graph(disease_genes);
+            filtered_interactome_graph.disease = disease
+            filtered_interactome_graph.nodes = filtered_interactome_graph.nodes.map( node =>{
+                node.disease = disease;
+                return node;
+            } )
+            t1 = performance.now();
+            console.log(`to filter_interactome_graph took ${t1 - t0} milliseconds.`);
 
-        t1 = performance.now();
-        console.log(`to filter_interactome_graph took ${t1 - t0} milliseconds.`);
+            full_graph.nodes = full_graph.nodes.concat(filtered_interactome_graph.nodes)
+            full_graph.links = full_graph.links.concat(filtered_interactome_graph.links)
 
-        console.log(filtered_interactome_graph.disease +" graph");
-        console.debug(filtered_interactome_graph);
+            console.log(filtered_interactome_graph.disease +" graph");
+            console.debug(filtered_interactome_graph);
 
-        t0 = performance.now();
-        draw_graph(filtered_interactome_graph);
-        t1 = performance.now();
-        console.log(`to draw_graph took ${t1 - t0} milliseconds.`);
+        }
+        console.log(full_graph);
+        draw_graph(full_graph);
 
 
     });
@@ -164,6 +188,7 @@ var t0,t1;
 
 
 function filter_interactome_graph(gene_set){
+
     if(new_interactome === undefined || new_interactome.length < 1){
         console.error("Interactome (var new_interactome):");
         console.error(new_interactome);
@@ -236,45 +261,41 @@ drag = simulation => {
 
 
 function draw_graph(data){
-    if(data.nodes === undefined || data.links === undefined){
-        throw Error("Wrong draw_graph input: data must be a graph object i.e. an object with a list of nodes and " +
-            "a list of links");
+
+    if( data.nodes===undefined||data.links===undefined){
+        throw Error("Wrong draw_graph input: data must be a graph object");
     }
-    let margin = {top: 20, right: 20, bottom: 30, left: 40};
-    let width = 600 - margin.left - margin.right;
-    let height = 600 - margin.top - margin.bottom;
 
     //Set up the colour scale
     const color = d3.scaleOrdinal(d3.schemeCategory10);
 
     //Set up the force layout
-    var simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
+    let simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
         .force("link", d3.forceLink(data.links).id(d => d.id))
         .force("charge", d3.forceManyBody())
         .force("x", d3.forceX())
         .force("y", d3.forceY());
 
-
-    let svg = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .attr("viewBox", [-width / 2, -height / 2, width, height]);
-
     //init links
-    let link = svg.selectAll(".link")
+    let link = svg.append("g")
+            .attr("stroke", "#999")
+            .attr("stroke-opacity", 0.6)
+        .selectAll(".link")
         .data(data.links)
         .enter()
         .append("line")
         .attr("class", "link");
 
     //init nodes
-    let node = svg.selectAll(".node")
+    let node = svg.append("g")
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 1.5).selectAll(".node")
         .data(data.nodes)
         .enter()
         .append("circle")
         .attr("class", "node")
         .attr("r", 8)
-        .style("fill", "#7fdbff")
+        .style("fill", d => color(d.disease))
         .call(drag(simulation));
 
     // This function is run at each iteration of the force algorithm, updating the nodes position.
