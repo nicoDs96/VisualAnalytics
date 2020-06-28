@@ -57,6 +57,4 @@ graph.links = [];
         console.log(i);
     } )
 
-
-
 })();
