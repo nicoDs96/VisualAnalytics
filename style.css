@@ -1,0 +1,14 @@
+#filters {
+    position: absolute;
+    top:0;
+    right:0;
+    border-style: solid;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.filterelem {
+    text-align: center;
+    border-bottom-style: groove;
+    margin: 0px;
+}
