@@ -88,7 +88,7 @@ var useful_genes_list = new Set([]);
         * */
         new_interactome = [];
         interactome.forEach(record =>{
-           if(useful_genes_list.has(parseInt(record.gene_ID_1)) | useful_genes_list.has(parseInt(record.gene_ID_2)) ){
+           if(useful_genes_list.has(parseInt(record.gene_ID_1)) || useful_genes_list.has(parseInt(record.gene_ID_2)) ){
                new_interactome.push(record);
            }
         });
