@@ -23,9 +23,8 @@ function handleMouseOut() {
 }
 
 function handleClick() {
-    console.log(d3.select(this).innerHTML); //todo: come fare ad avere il testo del p?
-    if((selected_diseases.length < 5) && !selected_diseases.includes(d3.select(this).innerHTML)){
-        selected_diseases.push(d3.select(this).innerHTML);
+    if((selected_diseases.length < 5) && !selected_diseases.includes(d3.select(this).text())){
+        selected_diseases.push(d3.select(this).text());
         console.log(selected_diseases);
     }
 }
