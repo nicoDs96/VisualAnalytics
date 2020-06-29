@@ -41,13 +41,6 @@ var useful_genes_list = new Set([]);
 
 var t0,t1;
 
-var full_graph = {};
-full_graph.nodes = [];
-full_graph.links = [];
-full_graph.diseases = [];
-
-
-
 /*
     VIEW SETUP
 * */
@@ -143,7 +136,23 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 })();
 
-function draw_from_input(input_array){
+async function draw_from_input(input_array){
+
+    let full_graph = {};
+    full_graph.nodes = [];
+    full_graph.links = [];
+
+    d3.select("#links-group").remove();
+    d3.select("#nodes-group").remove();
+    svg.append("g")
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1.5)
+        .attr('id','nodes-group');
+    svg.append("g")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.6)
+        .attr('id','links-group');
+
 
     for(let i = 0; i < input_array.length; i++ ){
         var disease = input_array[i].Diseases;
@@ -158,11 +167,14 @@ function draw_from_input(input_array){
 
         full_graph.nodes = full_graph.nodes.concat(filtered_interactome_graph.nodes)
         full_graph.links = full_graph.links.concat(filtered_interactome_graph.links)
-
-        draw_graph(full_graph);
+        console.log(`full graph ${i}`);
         console.log(full_graph);
 
     }
+    draw_graph(full_graph);
+    console.log(`full graph after draw`);
+    console.log(full_graph);
+
 
 }
 
@@ -249,7 +261,7 @@ drag = simulation => {
  * takes as input a graph (generally from filter_interactome_graph) and draws it with the classical network representation
  * @param {Graph} data:  filtered interactome to be drawn (output of filter_interactome_graph)
  */
-function draw_graph(data){
+async function draw_graph(data){
 
     if( data.nodes===undefined||data.links===undefined){
         throw Error("Wrong draw_graph input: data must be a graph object");
@@ -270,7 +282,7 @@ function draw_graph(data){
             enter => enter.append("line")
                 .attr("class", "link"),
             update => update,
-            exit => exit
+            exit => exit.transition().duration(300).attr("r",1).remove()
         );
         /*.enter()
         .append("line")
