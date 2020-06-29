@@ -9,11 +9,12 @@
 
 #legenda {
     position: absolute;
-    top:10%;
+    top:8%;
     left:0;
     #border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
+    background-color: transparent;
 }
 #controls {
     position: absolute;
@@ -32,4 +33,8 @@
 
 span {
     padding-left: 5px;
+}
+
+#legenda > *{
+    background-color: transparent;
 }
