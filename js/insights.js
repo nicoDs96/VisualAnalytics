@@ -41,12 +41,18 @@ var useful_genes_list = new Set([]);
 
 var t0,t1;
 
+var full_graph = {};
+full_graph.nodes = [];
+full_graph.links = [];
+full_graph.diseases = [];
+
+
 
 /*
     VIEW SETUP
 * */
 var margin = {top: 20, right: 20, bottom: 30, left: 40};
-var width = 800 - margin.left - margin.right;
+var width = 1200 - margin.left - margin.right;
 var height = 800 - margin.top - margin.bottom;
 
 var svg = d3.select("body").append("svg")
@@ -74,7 +80,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     //load disease-gene mapping
     t0 = performance.now();
-    await d3.tsv('datasets/02__seeds.tsv', (record) =>{
+    await d3.tsv('new_data/02__seeds.tsv', (record) =>{
         disease_gene_mapping.push(record);
         //if gene is not in  useful_genes_list add it to the list
         record.Genes.split(",").forEach(gene=>{
@@ -86,7 +92,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     //load drug-gene mapping
     t0 = performance.now();
-    await d3.tsv('datasets/03_Drug-target.tsv', (record) =>{
+    await d3.tsv('new_data/03_Drug-target.tsv', (record) =>{
 
         drug_gene_mapping.push(record);
         //if gene is not in  useful_genes_list add it to the list
@@ -100,7 +106,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     //load drug-disease mapping
     t0 = performance.now();
-    await d3.tsv('datasets/04_Drug-disease.tsv', (record) =>{
+    await d3.tsv('new_data/04_Drug-disease.tsv', (record) =>{
 
         drug_disease_mapping.push(record);
 
@@ -114,7 +120,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     //load interactome
     t0 = performance.now();
-    await  d3.tsv('datasets/01_Interactome.TSV', (record) =>{
+    await  d3.tsv('new_data/01_Interactome.TSV', (record) =>{
         interactome.push(record);
     });
     /*
@@ -138,9 +144,6 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 })();
 
 function draw_from_input(input_array){
-    let full_graph = {};
-    full_graph.nodes = [];
-    full_graph.links = [];
 
     for(let i = 0; i < input_array.length; i++ ){
         var disease = input_array[i].Diseases;
@@ -157,6 +160,7 @@ function draw_from_input(input_array){
         full_graph.links = full_graph.links.concat(filtered_interactome_graph.links)
 
         draw_graph(full_graph);
+        console.log(full_graph);
 
     }
 
@@ -254,9 +258,9 @@ function draw_graph(data){
     //Set up the force layout
     let simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
         .force("link", d3.forceLink(data.links).id(d => d.id))
-        .force("charge", d3.forceManyBody())
-        .force("x", d3.forceX())
-        .force("y", d3.forceY());
+        .force("charge", d3.forceManyBody().strength(-30))
+        .force("x", d3.forceX().strength(0.05))
+        .force("y", d3.forceY().strength(0.08));
 
     //init links
     let link = svg.select("#links-group")
@@ -278,17 +282,18 @@ function draw_graph(data){
         .data(data.nodes)
         .join(
         enter => enter.append("circle")
-                .attr("class", "node")
-                .attr("disease",  d => d.disease)
-                .attr("symbol", d => d.symbol)
-                .attr("r", 5)
-                .style("fill", d => color(d.disease))
-                .call(drag(simulation))
-                .on("mouseover", (d,i)=>{ d3.selectAll('.node').style("opacity", 0.3).style("fill", "#aaaaaa"); d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 1).style("fill", d => color(d.disease)) })
-                .on("mouseout", () =>{d3.selectAll('.node').style("opacity", 1).style("fill", d => color(d.disease))})
+            .attr("class", "node")
+            .attr("disease",  d => d.disease)
+            .attr("symbol", d => d.symbol)
+            .attr("r", 5)
+            .style("fill", d => color(d.disease))
+            .style("opacity", 0.7)
+            .call(drag(simulation))
+            .on("mouseover", (d,i)=>{ d3.selectAll('.node').style("opacity", 0.3).style("fill", "#aaaaaa"); d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 0.7).style("fill", d => color(d.disease)) })
+            .on("mouseout", () =>{d3.selectAll('.node').style("opacity", 0.7).style("fill", d => color(d.disease))})
              ,
-        update => update.attr("disease",  add_disease_attr).style("fill", d => color(d.disease)),
-        exit => exit
+        update => update.attr("disease",  add_disease_attr).style("fill", d => color(d.disease)).style("opacity", 0.7),
+        exit => exit.transition().duration(300).attr("r",1).remove()
     );
 
 
