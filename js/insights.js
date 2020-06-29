@@ -65,7 +65,7 @@ svg.append("g")
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 //init the environment
-(async ()=>{
+(async  ()=>{
 
     /*
     * READ ALL DATA
@@ -132,6 +132,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     //Init sidebar
     init_sidebar();
+    clean_scene(); //clean-init svg container
 
 })();
 
