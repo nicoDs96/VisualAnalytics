@@ -59,7 +59,15 @@ function initLegenda(){
             .attr("class","filterelem")
             .on("mouseover", handleMouseOverLegenda)
             .on("mouseout", handleMouseOutLegenda)
-            .on("click", handleClickLegenda);
+            .on("click", handleClickLegenda)
+            .append("svg")
+            .style("padding-left", "3px")
+            .attr("width", 15)
+            .attr("height", 15)
+            .append("rect")
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill","red"); //todo:cambiare colore e magari posizionamento a destra
 
     });
 }
