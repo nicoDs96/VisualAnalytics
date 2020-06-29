@@ -165,7 +165,7 @@ var svg = d3.select("body").append("svg")
             let filtered_interactome_graph = filter_interactome_graph(disease_genes);
             filtered_interactome_graph.disease = disease
             filtered_interactome_graph.nodes = filtered_interactome_graph.nodes.map( node =>{
-                node.disease = disease;
+                node.disease = disease.replace(/[ ]+/g,"-");
                 return node;
             } )
             t1 = performance.now();
@@ -294,9 +294,25 @@ function draw_graph(data){
         .enter()
         .append("circle")
         .attr("class", "node")
-        .attr("r", 8)
+        .attr("disease",  add_disease_attr)
+        .attr("r", 5)
         .style("fill", d => color(d.disease))
-        .call(drag(simulation));
+        .call(drag(simulation))
+        .on("mouseover", (d,i)=>{ d3.selectAll('.node').style("opacity", 0.3); d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 1) })
+        .on("mouseout", () =>{d3.selectAll('.node').style("opacity", 1)});
+
+    function add_disease_attr(d,i){
+        let diseases = d3.select(this).attr("disease");
+        if (diseases === null){ //if this is the first time we see the node set disease attribute directly
+            return d.disease;
+        }
+        //else add it separating with a withe space from other nodes if it is not inside the disease list yet
+        let d_vect = diseases.split(" ");
+        if( d_vect.find(disease=>{return disease == d.disease}) === undefined ){
+            return diseases + " "+ d.disease;
+        }
+        return diseases; //if it was already inside return the list as it was
+    }
 
     // This function is run at each iteration of the force algorithm, updating the nodes position.
     simulation.on("tick", () =>  {
