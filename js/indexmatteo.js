@@ -52,24 +52,26 @@ function handleClickSidebar() {
 }
 
 function initLegenda(){
-    d3.select("#legenda").selectAll("p").remove();
-    selected_diseases.forEach(record =>{
-        d3.select("#legenda")
-            .append("p").text(record)
-            .attr("class","filterelem")
-            .on("mouseover", handleMouseOverLegenda)
-            .on("mouseout", handleMouseOutLegenda)
-            .on("click", handleClickLegenda)
-            .append("svg")
-            .style("padding-left", "3px")
-            .attr("width", 15)
-            .attr("height", 15)
-            .append("rect")
-            .attr("width", 15)
-            .attr("height", 15)
-            .attr("fill","red"); //todo:cambiare colore e magari posizionamento a destra
+    let record = d3.select("#legenda")
+        .selectAll("p")
+        .data(selected_diseases);
+    record.exit().remove()
+    let p = record.enter()
+        .append("p")
+        .attr("class","filterelem")
+        .on("mouseover", handleMouseOverLegenda)
+        .on("mouseout", handleMouseOutLegenda)
+        .on("click", handleClickLegenda)
+    p.append("svg")
+        .style("padding-left", "3px")
+        .attr("width", 15)
+        .attr("height", 15)
+        .append("rect")
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("fill",d=>color(d.replace(/[ ]+/g,"-")));
+    p.append('span').text(d=>{return d});
 
-    });
 }
 
 function handleMouseOverLegenda() {

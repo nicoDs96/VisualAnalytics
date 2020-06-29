@@ -134,8 +134,8 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     init_sidebar();
     clean_scene(); //clean-init svg container
     //insert checkbox to show_labels
-    let lbl =  d3.select("#legenda").append("label")
-    lbl.text("Show Genes");
+    let lbl =  d3.select("#controls").append("label")
+    lbl.text("Show Genes Symbol");
     lbl.append("input")
     .attr("type","checkbox")
     .attr("id","show_labels")

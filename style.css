@@ -9,15 +9,27 @@
 
 #legenda {
     position: absolute;
-    top:0;
+    top:10%;
     left:0;
-    border-style: solid;
+    #border-style: solid;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+#controls {
+    position: absolute;
+    top:0;
+    left:50%;
+    #border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
 }
 
 .filterelem {
-    text-align: center;
-    border-bottom-style: groove;
+    text-align: left;
+    #border-bottom-style: groove;
     margin: 0px;
+}
+
+span {
+    padding-left: 5px;
 }
