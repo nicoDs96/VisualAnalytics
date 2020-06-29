@@ -65,7 +65,7 @@ svg.append("g")
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 //init the environment
-(async ()=>{
+(async  ()=>{
 
     /*
     * READ ALL DATA
@@ -104,7 +104,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
         drug_disease_mapping.push(record);
 
         record["Disease Gene Entrez Gene IDs"].split(";").forEach(gene=>{
-            useful_genes_list.add(parseInt(gene)); //todo: due geni uguali vengono messi più volte?
+            useful_genes_list.add(parseInt(gene));
         });
 
     });
@@ -122,7 +122,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     new_interactome = [];
     interactome.forEach(record =>{
         if(useful_genes_list.has(parseInt(record.gene_ID_1)) || useful_genes_list.has(parseInt(record.gene_ID_2)) ){
-            new_interactome.push(record); //todo: per ridurre la dimensionalità più che un or va bene anche un and?
+            new_interactome.push(record);
         }
     });
     console.log(`new_interactome size: ${new_interactome.length}\ninteractome size: ${interactome.length}`);
@@ -131,28 +131,18 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     console.log(`Read and process of 01_Interactome.TSV took ${t1 - t0} milliseconds.`);
 
     //Init sidebar
-    init_sidebar()
-
+    init_sidebar();
+    clean_scene(); //clean-init svg container
 
 })();
 
-async function draw_from_input(input_array){
+function draw_from_input(input_array){
 
     let full_graph = {};
     full_graph.nodes = [];
     full_graph.links = [];
 
-    d3.select("#links-group").remove();
-    d3.select("#nodes-group").remove();
-    svg.append("g")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 1.5)
-        .attr('id','nodes-group');
-    svg.append("g")
-        .attr("stroke", "#999")
-        .attr("stroke-opacity", 0.6)
-        .attr('id','links-group');
-
+    clean_scene();
 
     for(let i = 0; i < input_array.length; i++ ){
         var disease = input_array[i].Diseases;
@@ -284,9 +274,7 @@ async function draw_graph(data){
             update => update,
             exit => exit.transition().duration(300).attr("r",1).remove()
         );
-        /*.enter()
-        .append("line")
-        .attr("class", "link");*/
+
 
     //init nodes
     let node = svg.select("#nodes-group")
@@ -295,20 +283,36 @@ async function draw_graph(data){
         .join(
         enter => enter.append("circle")
             .attr("class", "node")
-            .attr("disease",  d => d.disease)
             .attr("symbol", d => d.symbol)
+            .attr("disease",  add_disease_attr)
             .attr("r", 5)
-            .style("fill", d => color(d.disease))
+            //.style("fill", d =>{ color(d.disease) })
+            .style("fill", get_color)
             .style("opacity", 0.7)
             .call(drag(simulation))
-            .on("mouseover", (d,i)=>{ d3.selectAll('.node').style("opacity", 0.3).style("fill", "#aaaaaa"); d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 0.7).style("fill", d => color(d.disease)) })
-            .on("mouseout", () =>{d3.selectAll('.node').style("opacity", 0.7).style("fill", d => color(d.disease))})
+            .on("mouseover", (d,i)=>{ d3.selectAll('.node').style("opacity", 0.3).style("fill", "#aaaaaa"); d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 0.7).style("fill", get_color) })
+            .on("mouseout", () =>{d3.selectAll('.node').style("opacity", 0.7).style("fill", get_color )})
              ,
-        update => update.attr("disease",  add_disease_attr).style("fill", d => color(d.disease)).style("opacity", 0.7),
+        update => update,
         exit => exit.transition().duration(300).attr("r",1).remove()
     );
 
+    function get_color(d,i){
+        //gives color associated to a disease to the gene in the disease
+        // r black if it is a linked gene but not specific of the disease
+        let disease_genes_list = disease_gene_mapping.find(record => record.Diseases.replace(/[ ]+/g,"-")===d.disease);
+        if(disease_genes_list===undefined){
+            console.error(`error in get_color function: can not find the genes list of ${d.disease} -> 
+                disease_gene_mapping.find returned ${disease_genes_list}`);
+        }
+        let disease_genes_set = new Set(disease_genes_list.Genes.split(","));
+        if( disease_genes_set.has(d.id) ){
+            return color(d.disease);
+        }
+        //return color("not-"+d.disease);
+        return "#000000"
 
+    }
     function add_disease_attr(d,i){
         let diseases = d3.selectAll(`[symbol="${d.symbol}"]`).attr("disease");
         if (diseases === null){ //if this is the first time we see the node set disease attribute directly
@@ -352,5 +356,18 @@ async function draw_graph(data){
                 return d.y ;
             });
     });
+}
+
+function clean_scene(){
+    d3.select("#links-group").remove();
+    d3.select("#nodes-group").remove();
+    svg.append("g")
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1.5)
+        .attr('id','nodes-group');
+    svg.append("g")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.6)
+        .attr('id','links-group');
 }
 
