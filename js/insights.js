@@ -104,7 +104,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
         drug_disease_mapping.push(record);
 
         record["Disease Gene Entrez Gene IDs"].split(";").forEach(gene=>{
-            useful_genes_list.add(parseInt(gene));
+            useful_genes_list.add(parseInt(gene)); //todo: due geni uguali vengono messi più volte?
         });
 
     });
@@ -122,7 +122,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     new_interactome = [];
     interactome.forEach(record =>{
         if(useful_genes_list.has(parseInt(record.gene_ID_1)) || useful_genes_list.has(parseInt(record.gene_ID_2)) ){
-            new_interactome.push(record);
+            new_interactome.push(record); //todo: per ridurre la dimensionalità più che un or va bene anche un and?
         }
     });
     console.log(`new_interactome size: ${new_interactome.length}\ninteractome size: ${interactome.length}`);

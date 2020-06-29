@@ -5,18 +5,18 @@ function init_sidebar(){
         d3.select("#filters")
             .append("p").text(record.Diseases)
             .attr("class","filterelem")
-            .on("mouseover", handleMouseOver)
-            .on("mouseout", handleMouseOut)
-            .on("click", handleClick);
+            .on("mouseover", handleMouseOverSidebar)
+            .on("mouseout", handleMouseOutSidebar)
+            .on("click", handleClickSidebar);
     });
 }
 
 
-function handleMouseOver() {
+function handleMouseOverSidebar() {
     d3.select(this).style("background-color","grey");
 }
 
-function handleMouseOut() {
+function handleMouseOutSidebar() {
     if(selected_diseases.includes(d3.select(this).text())){
         d3.select(this).style("background-color","green");
     }else{
@@ -24,12 +24,15 @@ function handleMouseOut() {
     }
 }
 
-function handleClick() {
+function handleClickSidebar() {
 
     if((selected_diseases.length < 5) && !selected_diseases.includes(d3.select(this).text())){
         selected_diseases.push(d3.select(this).text());
     }else if(selected_diseases.includes(d3.select(this).text())){
         selected_diseases.splice(selected_diseases.indexOf(d3.select(this).text()),1);
+    }
+    else{
+        return;
     }
         /*
         --------------------------------------------------------------------
@@ -44,5 +47,31 @@ function handleClick() {
             }
         });
         draw_from_input(input_array);
+        initLegenda();
+
+}
+
+function initLegenda(){
+    d3.select("#legenda").selectAll("p").remove();
+    selected_diseases.forEach(record =>{
+        d3.select("#legenda")
+            .append("p").text(record)
+            .attr("class","filterelem")
+            .on("mouseover", handleMouseOverLegenda)
+            .on("mouseout", handleMouseOutLegenda)
+            .on("click", handleClickLegenda);
+
+    });
+}
+
+function handleMouseOverLegenda() {
+    d3.select(this).style("background-color","grey");
+}
+
+function handleMouseOutLegenda() {
+    d3.select(this).style("background-color","white");
+}
+
+function handleClickLegenda() {
 
 }

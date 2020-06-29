@@ -7,6 +7,15 @@
     padding-right: 4px;
 }
 
+#legenda {
+    position: absolute;
+    top:0;
+    left:0;
+    border-style: solid;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
 .filterelem {
     text-align: center;
     border-bottom-style: groove;
