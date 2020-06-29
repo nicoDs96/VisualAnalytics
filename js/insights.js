@@ -39,7 +39,7 @@ var interactome= [];
 
 var useful_genes_list = new Set([]);
 
-var t0,t1;
+var t0,t1, show_labels;
 
 /*
     VIEW SETUP
@@ -133,6 +133,21 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     //Init sidebar
     init_sidebar();
     clean_scene(); //clean-init svg container
+    //insert checkbox to show_labels
+    let lbl =  d3.select("#legenda").append("label")
+    lbl.text("Show Genes");
+    lbl.append("input")
+    .attr("type","checkbox")
+    .attr("id","show_labels")
+    .attr("checked",null)
+    .on('change',()=>{
+        if(document.getElementById("show_labels").checked){
+            d3.selectAll(".node-label").style("display","block");
+        }else{
+            d3.selectAll(".node-label").style("display","none");
+        }
+    });
+
 
 })();
 
@@ -278,25 +293,48 @@ async function draw_graph(data){
 
     //init nodes
     let node = svg.select("#nodes-group")
-        .selectAll("g")
+        .selectAll(".node")
         .data(data.nodes)
-        .join(
-        enter => enter.append("circle")
-            .attr("class", "node")
-            .attr("symbol", d => d.symbol)
-            .attr("disease",  add_disease_attr)
-            .attr("r", 5)
-            //.style("fill", d =>{ color(d.disease) })
-            .style("fill", get_color)
-            .style("opacity", 0.7)
-            .call(drag(simulation))
-            .on("mouseover", (d,i)=>{ d3.selectAll('.node').style("opacity", 0.3).style("fill", "#aaaaaa"); d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 0.7).style("fill", get_color) })
-            .on("mouseout", () =>{d3.selectAll('.node').style("opacity", 0.7).style("fill", get_color )})
-             ,
-        update => update,
-        exit => exit.transition().duration(300).attr("r",1).remove()
-    );
+        .enter()
+        .append("g")
+        .attr("class","node")
+        .call(drag(simulation));
 
+    let nodeLabels = node.append("text")
+        .attr("class", "node-label")
+        .attr("symbol", d => d.symbol)
+        .attr("disease",  add_disease_attr)
+        .attr('dy', 24)
+        .attr("text-anchor", "middle")
+        .text(d => d.symbol)
+        .style("display","none")
+        .style("font-family","sans-serif")
+        .style("font-size","0.65em")
+        .style("font-weight","bold")
+        .style("fill", get_color)
+    ;
+
+
+    let nodeCircle = node.append("circle")
+        .attr("class", "node-circle")
+        .attr("symbol", d => d.symbol)
+        .attr("disease",  add_disease_attr)
+        .attr("r", 5)
+        //.style("fill", d =>{ color(d.disease) })
+        .style("fill", get_color)
+        .style("opacity", 0.7)
+        .call(drag(simulation))
+        .on("mouseover", mouse_over)
+        .on("mouseout", () =>{d3.selectAll('.node-circle').style("opacity", 0.7).style("fill", get_color )});
+
+    function mouse_over(d,i){
+
+        //reduce visibility of nodes and text
+        d3.selectAll('.node-circle').style("opacity", 0.3).style("fill", "#aaaaaa");
+        d3.selectAll('.node-label').style("opacity", 0.3);
+        //highlight relevant nodes and labels
+        d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 0.7).style("fill", get_color);
+    }
     function get_color(d,i){
         //gives color associated to a disease to the gene in the disease
         // r black if it is a linked gene but not specific of the disease
@@ -347,14 +385,15 @@ async function draw_graph(data){
             });
 
         node
-            .attr("cx", function (d) {
+            .attr("transform", d => `translate(${d.x}, ${d.y})`);
+            /*.attr("cx", function (d) {
                 //return Math.max(0, Math.min(width, d.x));
                 return d.x ;
             })
             .attr("cy", function (d) {
                 //return Math.max(0, Math.min(width, d.y));
                 return d.y ;
-            });
+            });*/
     });
 }
 
