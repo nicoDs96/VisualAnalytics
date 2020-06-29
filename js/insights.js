@@ -5,7 +5,7 @@ Array [ Object { Diseases: "adrenal gland diseases",
                }
        ... ]
 * */
-var disease_gene_mapping;
+var disease_gene_mapping = [];
 
 /*
 Array [ Object { "Drug Name": "Abarelix",
@@ -15,7 +15,7 @@ Array [ Object { "Drug Name": "Abarelix",
                 }
        ... ]
 * */
-var drug_gene_mapping;
+var drug_gene_mapping = [];
 
 /*
 Array [ Object { "Drug Name": "Abacavir",
@@ -25,7 +25,7 @@ Array [ Object { "Drug Name": "Abacavir",
                  "Disease Gene Entrez Gene IDs": "6352;3586;1231;1234" }
       ...]
 * */
-var drug_disease_mapping;
+var drug_disease_mapping = [];
 
 /*
 Array [ Object { gene_ID_1: "1",
@@ -35,7 +35,7 @@ Array [ Object { gene_ID_1: "1",
                  sources: "signaling" }
        ... ]
 */
-var interactome;
+var interactome= [];
 
 var useful_genes_list = new Set([]);
 
@@ -49,6 +49,18 @@ var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .attr("viewBox", [-width / 2, -height / 2, width, height]);
+svg.append("g")
+    .attr("stroke", "#fff")
+    .attr("stroke-width", 1.5)
+    .attr('id','nodes-group');
+svg.append("g")
+    .attr("stroke", "#999")
+    .attr("stroke-opacity", 0.6)
+    .attr('id','links-group');
+
+//Set up the colour scale
+var color = d3.scaleOrdinal(d3.schemeCategory10);
+
 
 (async ()=>{
 
@@ -56,138 +68,104 @@ var svg = d3.select("body").append("svg")
     * READ ALL DATA
     * */
 
-    await d3.tsv('datasets/02__seeds.tsv', (data) =>{
-
-        t0 = performance.now();
-
-        disease_gene_mapping = data;
-        disease_gene_mapping.forEach(record =>{
-            //if gene is not in  useful_genes_list add it to the list
-            record.Genes.split(",").forEach(gene=>{
-                useful_genes_list.add(parseInt(gene));
-            });
+    //load disease-gene mapping
+    t0 = performance.now();
+    await d3.tsv('datasets/02__seeds.tsv', (record) =>{
+        disease_gene_mapping.push(record);
+        //if gene is not in  useful_genes_list add it to the list
+        record.Genes.split(",").forEach(gene=>{
+            useful_genes_list.add(parseInt(gene));
         });
-        console.log("disease_gene_mapping")
-        console.log(useful_genes_list);
+    });
+    t1 = performance.now();
+    console.log(`Read and process of 02__seeds.tsv took ${t1 - t0} milliseconds.`);
+    console.log("disease_gene_mapping")
+    console.log(useful_genes_list);
 
-        t1 = performance.now();
-        console.log(`Read and process of 02__seeds.tsv took ${t1 - t0} milliseconds.`);
+    //load drug-gene mapping
+    t0 = performance.now();
+    await d3.tsv('datasets/03_Drug-target.tsv', (record) =>{
 
+        drug_gene_mapping.push(record);
+        //if gene is not in  useful_genes_list add it to the list
+        record["Target Entrez Gene IDs"].split(";").forEach(gene=>{
+            useful_genes_list.add(parseInt(gene));
+        });
     });
 
+    t1 = performance.now();
+    console.log(`Read and process of 03_Drug-target.tsv took ${t1 - t0} milliseconds.`);
+    console.log("drug_gene_mapping")
+    console.log(useful_genes_list);
 
+    //load drug-disease mapping
+    t0 = performance.now();
+    await d3.tsv('datasets/04_Drug-disease.tsv', (record) =>{
 
-    await d3.tsv('datasets/03_Drug-target.tsv', (data) =>{
-        t0 = performance.now();
+        drug_disease_mapping.push(record);
 
-        drug_gene_mapping = data;
-        drug_gene_mapping.forEach(record =>{
-            //if gene is not in  useful_genes_list add it to the list
-            record["Target Entrez Gene IDs"].split(";").forEach(gene=>{
-                useful_genes_list.add(parseInt(gene));
-            });
+        record["Disease Gene Entrez Gene IDs"].split(";").forEach(gene=>{
+            useful_genes_list.add(parseInt(gene));
         });
-
-        console.log("drug_gene_mapping")
-        console.log(useful_genes_list);
-
-        t1 = performance.now();
-        console.log(`Read and process of 03_Drug-target.tsv took ${t1 - t0} milliseconds.`);
 
     });
+    t1 = performance.now();
+    console.log(`Read and process of 04_Drug-disease.tsv took ${t1 - t0} milliseconds.`);
+    console.log("drug_disease_mapping")
+    console.log(useful_genes_list);
 
-
-
-    await d3.tsv('datasets/04_Drug-disease.tsv', (data) =>{
-
-        t0 = performance.now();
-
-        drug_disease_mapping = data;
-        drug_disease_mapping.forEach(record =>{
-            //if gene is not in  useful_genes_list add it to the list
-            record["Disease Gene Entrez Gene IDs"].split(";").forEach(gene=>{
-                useful_genes_list.add(parseInt(gene));
-            });
-        });
-
-        console.log("drug_disease_mapping")
-        console.log(useful_genes_list);
-
-        t1 = performance.now();
-        console.log(`Read and process of 04_Drug-disease.tsv took ${t1 - t0} milliseconds.`);
-
+    //load interactome
+    t0 = performance.now();
+    await  d3.tsv('datasets/01_Interactome.TSV', (record) =>{
+        interactome.push(record);
     });
 
-    await  d3.tsv('datasets/01_Interactome.TSV', (data) =>{
+    //Init sidebar
+    init_sidebar()
 
-        t0 = performance.now();
-
-        interactome = data;
-        console.log(interactome.length);
-        /*
-        * FILTER THE INTERACTOME MAINTAINING ONLY USEFUL RECORDS
-        * */
-        new_interactome = [];
-        interactome.forEach(record =>{
-           if(useful_genes_list.has(parseInt(record.gene_ID_1)) || useful_genes_list.has(parseInt(record.gene_ID_2)) ){
-               new_interactome.push(record);
-           }
-        });
-        console.log(new_interactome);
-
-        t1 = performance.now();
-        console.log(`Read and process of 01_Interactome.TSV took ${t1 - t0} milliseconds.`);
-
-        /*
-        --------------------------------------------------------------------
-          SELECT A DISEASE AND DRAW THE INTERACTOME OF THE DISEASE'S GENES
-        --------------------------------------------------------------------
-        */
-
-        //select basic disease TODO: replace with user input selector
-        var simulated_input_array = [];
-        simulated_input_array.push(
-            disease_gene_mapping[0],
-            disease_gene_mapping[1],
-            disease_gene_mapping[2],
-            disease_gene_mapping[3],
-            disease_gene_mapping[4],
-        );
-        var full_graph = {}
-        full_graph.nodes = [];
-        full_graph.links = [];
-
-        for(let i = 0; i < simulated_input_array.length; i++ ){
-            var disease = simulated_input_array[i].Diseases;
-            var disease_genes = new Set( simulated_input_array[i].Genes.split(",") );
-
-            t0 = performance.now();
-            let filtered_interactome_graph = filter_interactome_graph(disease_genes);
-            filtered_interactome_graph.disease = disease
-            filtered_interactome_graph.nodes = filtered_interactome_graph.nodes.map( node =>{
-                node.disease = disease.replace(/[ ]+/g,"-");
-                return node;
-            } )
-            t1 = performance.now();
-            console.log(`to filter_interactome_graph took ${t1 - t0} milliseconds.`);
-
-            full_graph.nodes = full_graph.nodes.concat(filtered_interactome_graph.nodes)
-            full_graph.links = full_graph.links.concat(filtered_interactome_graph.links)
-
-            console.log(filtered_interactome_graph.disease +" graph");
-            console.debug(filtered_interactome_graph);
-
+    /*
+       FILTER THE INTERACTOME MAINTAINING ONLY USEFUL RECORDS
+     * */
+    new_interactome = [];
+    interactome.forEach(record =>{
+        if(useful_genes_list.has(parseInt(record.gene_ID_1)) || useful_genes_list.has(parseInt(record.gene_ID_2)) ){
+            new_interactome.push(record);
         }
-        console.log(full_graph);
-        draw_graph(full_graph);
-
-
     });
+    console.log(new_interactome);
+
+    t1 = performance.now();
+    console.log(`Read and process of 01_Interactome.TSV took ${t1 - t0} milliseconds.`);
 
 })();
 
+function draw_from_input(input_array){
+    let full_graph = {};
+    full_graph.nodes = [];
+    full_graph.links = [];
 
-function filter_interactome_graph(gene_set){
+    for(let i = 0; i < input_array.length; i++ ){
+        var disease = input_array[i].Diseases;
+        var disease_genes = new Set( input_array[i].Genes.split(",") );
+
+        let filtered_interactome_graph = filter_interactome_graph(disease_genes);
+        filtered_interactome_graph.disease = disease
+        filtered_interactome_graph.nodes =  filtered_interactome_graph.nodes.map( node =>{
+            node.disease = disease.replace(/[ ]+/g,"-");
+            return node;
+        } )
+
+        full_graph.nodes = full_graph.nodes.concat(filtered_interactome_graph.nodes)
+        full_graph.links = full_graph.links.concat(filtered_interactome_graph.links)
+
+        draw_graph(full_graph);
+
+    }
+
+}
+
+
+function filter_interactome_graph(gene_set) {
 
     if(new_interactome === undefined || new_interactome.length < 1){
         console.error("Interactome (var new_interactome):");
@@ -266,9 +244,6 @@ function draw_graph(data){
         throw Error("Wrong draw_graph input: data must be a graph object");
     }
 
-    //Set up the colour scale
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
-
     //Set up the force layout
     let simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
         .force("link", d3.forceLink(data.links).id(d => d.id))
@@ -277,32 +252,41 @@ function draw_graph(data){
         .force("y", d3.forceY());
 
     //init links
-    let link = svg.append("g")
-            .attr("stroke", "#999")
-            .attr("stroke-opacity", 0.6)
-        .selectAll(".link")
+    let link = svg.select("#links-group")
+        .selectAll("line")
         .data(data.links)
-        .enter()
+        .join(
+            enter => enter.append("line")
+                .attr("class", "link"),
+            update => update,
+            exit => exit
+        );
+        /*.enter()
         .append("line")
-        .attr("class", "link");
+        .attr("class", "link");*/
 
     //init nodes
-    let node = svg.append("g")
-            .attr("stroke", "#fff")
-            .attr("stroke-width", 1.5).selectAll(".node")
+    let node = svg.select("#nodes-group")
+        .selectAll("g")
         .data(data.nodes)
-        .enter()
-        .append("circle")
-        .attr("class", "node")
-        .attr("disease",  add_disease_attr)
-        .attr("r", 5)
-        .style("fill", d => color(d.disease))
-        .call(drag(simulation))
-        .on("mouseover", (d,i)=>{ d3.selectAll('.node').style("opacity", 0.3); d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 1) })
-        .on("mouseout", () =>{d3.selectAll('.node').style("opacity", 1)});
+        .join(
+        enter => enter.append("circle")
+                .attr("class", "node")
+                .attr("disease",  d => d.disease)
+                .attr("symbol", d => d.symbol)
+                .attr("r", 5)
+                .style("fill", d => color(d.disease))
+                .call(drag(simulation))
+                .on("mouseover", (d,i)=>{ d3.selectAll('.node').style("opacity", 0.3).style("fill", "#aaaaaa"); d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 1).style("fill", d => color(d.disease)) })
+                .on("mouseout", () =>{d3.selectAll('.node').style("opacity", 1).style("fill", d => color(d.disease))})
+             ,
+        update => update.attr("disease",  add_disease_attr).style("fill", d => color(d.disease)),
+        exit => exit
+    );
+
 
     function add_disease_attr(d,i){
-        let diseases = d3.select(this).attr("disease");
+        let diseases = d3.selectAll(`[symbol="${d.symbol}"]`).attr("disease");
         if (diseases === null){ //if this is the first time we see the node set disease attribute directly
             return d.disease;
         }

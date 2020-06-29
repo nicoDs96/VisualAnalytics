@@ -1,9 +1,6 @@
-var disease_gene_mapping;
 var selected_diseases = [];
 
-d3.tsv('new_data/02__seeds.tsv', (data) =>{
-    disease_gene_mapping = data;
-
+function init_sidebar(){
     disease_gene_mapping.forEach(record =>{
         d3.select("#filters")
             .append("p").text(record.Diseases)
@@ -12,7 +9,8 @@ d3.tsv('new_data/02__seeds.tsv', (data) =>{
             .on("mouseout", handleMouseOut)
             .on("click", handleClick);
     });
-});
+}
+
 
 function handleMouseOver() {
     d3.select(this).style("background-color","grey");
@@ -23,9 +21,23 @@ function handleMouseOut() {
 }
 
 function handleClick() {
-    console.log(d3.select(this).innerHTML); //todo: come fare ad avere il testo del p?
-    if((selected_diseases.length < 5) && !selected_diseases.includes(d3.select(this).innerHTML)){
-        selected_diseases.push(d3.select(this).innerHTML);
+    console.log(d3.select(this).text()); //todo: come fare ad avere il testo del p?
+    if((selected_diseases.length < 5) && !selected_diseases.includes(d3.select(this).text())){
+        selected_diseases.push(d3.select(this).text());
         console.log(selected_diseases);
+
+        /*
+        --------------------------------------------------------------------
+          SELECT A DISEASE AND DRAW THE INTERACTOME OF THE DISEASE'S GENES
+        --------------------------------------------------------------------
+    */
+        let input_array=[];
+        selected_diseases.forEach(sel_dis=>{
+            let innput_record = disease_gene_mapping.find( record=> record.Diseases === sel_dis)
+            if(innput_record!== undefined){
+                input_array.push(innput_record);
+            }
+        });
+        draw_from_input(input_array);
     }
 }
