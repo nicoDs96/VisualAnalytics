@@ -41,6 +41,10 @@ var useful_genes_list = new Set([]);
 
 var t0,t1;
 
+
+/*
+    VIEW SETUP
+* */
 var margin = {top: 20, right: 20, bottom: 30, left: 40};
 var width = 800 - margin.left - margin.right;
 var height = 800 - margin.top - margin.bottom;
@@ -61,7 +65,7 @@ svg.append("g")
 //Set up the colour scale
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-
+//init the environment
 (async ()=>{
 
     /*
@@ -79,8 +83,6 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     });
     t1 = performance.now();
     console.log(`Read and process of 02__seeds.tsv took ${t1 - t0} milliseconds.`);
-    console.log("disease_gene_mapping")
-    console.log(useful_genes_list);
 
     //load drug-gene mapping
     t0 = performance.now();
@@ -95,8 +97,6 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     t1 = performance.now();
     console.log(`Read and process of 03_Drug-target.tsv took ${t1 - t0} milliseconds.`);
-    console.log("drug_gene_mapping")
-    console.log(useful_genes_list);
 
     //load drug-disease mapping
     t0 = performance.now();
@@ -111,18 +111,12 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     });
     t1 = performance.now();
     console.log(`Read and process of 04_Drug-disease.tsv took ${t1 - t0} milliseconds.`);
-    console.log("drug_disease_mapping")
-    console.log(useful_genes_list);
 
     //load interactome
     t0 = performance.now();
     await  d3.tsv('datasets/01_Interactome.TSV', (record) =>{
         interactome.push(record);
     });
-
-    //Init sidebar
-    init_sidebar()
-
     /*
        FILTER THE INTERACTOME MAINTAINING ONLY USEFUL RECORDS
      * */
@@ -132,10 +126,14 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
             new_interactome.push(record);
         }
     });
-    console.log(new_interactome);
+    console.log(`new_interactome size: ${new_interactome.length}\ninteractome size: ${interactome.length}`);
 
     t1 = performance.now();
     console.log(`Read and process of 01_Interactome.TSV took ${t1 - t0} milliseconds.`);
+
+    //Init sidebar
+    init_sidebar()
+
 
 })();
 
@@ -164,7 +162,12 @@ function draw_from_input(input_array){
 
 }
 
-
+/**
+ * @param {Set<any>} gene_set: list of genes IDs
+ * @return {Graph} graph: an object containing nodes and links properties representing the filtered interactome i.e the
+ *         interactome containing only the genes in the gene_set
+ *
+ */
 function filter_interactome_graph(gene_set) {
 
     if(new_interactome === undefined || new_interactome.length < 1){
@@ -238,6 +241,10 @@ drag = simulation => {
 
 
 
+/**
+ * takes as input a graph (generally from filter_interactome_graph) and draws it with the classical network representation
+ * @param {Graph} data:  filtered interactome to be drawn (output of filter_interactome_graph)
+ */
 function draw_graph(data){
 
     if( data.nodes===undefined||data.links===undefined){
