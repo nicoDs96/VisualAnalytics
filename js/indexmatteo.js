@@ -17,14 +17,20 @@ function handleMouseOver() {
 }
 
 function handleMouseOut() {
+    if(selected_diseases.includes(d3.select(this).text())){
+        d3.select(this).style("background-color","green");
+    }else{
     d3.select(this).style("background-color","white");
+    }
 }
 
 function handleClick() {
 
     if((selected_diseases.length < 5) && !selected_diseases.includes(d3.select(this).text())){
         selected_diseases.push(d3.select(this).text());
-
+    }else if(selected_diseases.includes(d3.select(this).text())){
+        selected_diseases.splice(selected_diseases.indexOf(d3.select(this).text()),1);
+    }
         /*
         --------------------------------------------------------------------
           SELECT A DISEASE AND DRAW THE INTERACTOME OF THE DISEASE'S GENES
@@ -38,5 +44,5 @@ function handleClick() {
             }
         });
         draw_from_input(input_array);
-    }
+
 }
