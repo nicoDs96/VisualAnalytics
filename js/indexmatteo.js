@@ -52,10 +52,12 @@ function handleClickSidebar() {
 }
 
 function initLegenda(){
+    console.log(selected_diseases);
+    d3.select("#legenda")
+        .selectAll("p").remove(); //added because exit section introduce a bug in the visualization fo the legend
     let record = d3.select("#legenda")
         .selectAll("p")
-        .data(selected_diseases);
-    record.exit().remove()
+        .data(selected_diseases.sort())
     let p = record.enter()
         .append("p")
         .attr("class","filterelem")
@@ -67,10 +69,11 @@ function initLegenda(){
         .attr("width", 15)
         .attr("height", 15)
         .append("rect")
-        .attr("width", 15)
-        .attr("height", 15)
-        .attr("fill",d=>color(d.replace(/[ ]+/g,"-")));
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill",d=>color(d.replace(/[ ]+/g,"-")));
     p.append('span').text(d=>{return d});
+    record.exit().remove();
 
 }
 
