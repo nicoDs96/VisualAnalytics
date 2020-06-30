@@ -125,7 +125,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
             new_interactome.push(record);
         }
     });
-    console.log(`new_interactome size: ${new_interactome.length}\ninteractome size: ${interactome.length}`);
+    console.log(`new_interactome size: ${new_interactome.length}\ninteractome size: ${interactome.length}\nSize reduced of ${(100 - new_interactome.length*100/interactome.length).toFixed(2)}\%`);
 
     t1 = performance.now();
     console.log(`Read and process of 01_Interactome.TSV took ${t1 - t0} milliseconds.`);
@@ -151,6 +151,11 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 })();
 
+
+/**
+ * Draws the interactome filtered by genes from a given disease
+ * @param {[]} input_array: the vector containing the selected record from disease_gene_mapping
+ */
 function draw_from_input(input_array){
 
     let full_graph = {};
@@ -172,13 +177,8 @@ function draw_from_input(input_array){
 
         full_graph.nodes = full_graph.nodes.concat(filtered_interactome_graph.nodes)
         full_graph.links = full_graph.links.concat(filtered_interactome_graph.links)
-        console.log(`full graph ${i}`);
-        console.log(full_graph);
-
     }
     draw_graph(full_graph);
-    console.log(`full graph after draw`);
-    console.log(full_graph);
 
 
 }
@@ -234,7 +234,10 @@ function filter_interactome_graph(gene_set) {
 
 }
 
-
+/**
+ * define nodes drag-drop simulation, might allow users to rearrange dense graph for better readability in case the
+ * automatic display fails.
+ * */
 drag = simulation => {
 
     function dragstarted(d) {
@@ -291,7 +294,11 @@ async function draw_graph(data){
         );
 
 
-    //init nodes
+    //init nodes: hierarchy is
+    // <g>
+    //      <circle></circle>
+    //      <text></text>
+    //</g>
     let node = svg.select("#nodes-group")
         .selectAll(".node")
         .data(data.nodes)
@@ -307,7 +314,7 @@ async function draw_graph(data){
         .attr('dy', 24)
         .attr("text-anchor", "middle")
         .text(d => d.symbol)
-        .style("display","none")
+        .style("display",()=>{ return document.getElementById("show_labels").checked? "block":"none" })
         .style("font-family","sans-serif")
         .style("font-size","0.65em")
         .style("font-weight","bold")
@@ -325,7 +332,7 @@ async function draw_graph(data){
         .style("opacity", 0.7)
         .call(drag(simulation))
         .on("mouseover", mouse_over)
-        .on("mouseout", () =>{d3.selectAll('.node-circle').style("opacity", 0.7).style("fill", get_color )});
+        .on("mouseout", mouse_out);
 
     function mouse_over(d,i){
 
@@ -333,7 +340,18 @@ async function draw_graph(data){
         d3.selectAll('.node-circle').style("opacity", 0.3).style("fill", "#aaaaaa");
         d3.selectAll('.node-label').style("opacity", 0.3);
         //highlight relevant nodes and labels
-        d3.selectAll(`[disease~="${d.disease}"]`).style("opacity", 0.7).style("fill", get_color);
+        d3.selectAll(`[disease~="${d.disease}"]`)
+            .style("opacity", 0.7)
+            .style("fill", get_color)
+            .style("font-size", "0.75em");
+
+    }
+    function mouse_out(d,i){
+        d3.selectAll('.node').style("opacity", 1);
+        d3.selectAll('.node-circle').style("opacity", 0.7).style("fill", get_color );
+        d3.selectAll('.node-label').style("opacity", 1).style("font-size", "0.65em");
+
+
     }
     function get_color(d,i){
         //gives color associated to a disease to the gene in the disease
@@ -383,20 +401,14 @@ async function draw_graph(data){
                 //return Math.max(0, Math.min(width, d.target.y));
                 return d.target.y;
             });
+        //adjust the node group (g element containing circles and text labels)
+        node.attr("transform", d => `translate(${d.x}, ${d.y})`);
 
-        node
-            .attr("transform", d => `translate(${d.x}, ${d.y})`);
-            /*.attr("cx", function (d) {
-                //return Math.max(0, Math.min(width, d.x));
-                return d.x ;
-            })
-            .attr("cy", function (d) {
-                //return Math.max(0, Math.min(width, d.y));
-                return d.y ;
-            });*/
     });
 }
-
+/**
+ * Scene fast initialization
+ * */
 function clean_scene(){
     d3.select("#links-group").remove();
     d3.select("#nodes-group").remove();
