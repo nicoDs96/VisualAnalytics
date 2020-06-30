@@ -85,7 +85,7 @@ function handleMouseOutLegenda() {
     d3.select(this).style("background-color","transparent");
 }
 
-function handleClickLegenda(d,i) {
+handleClickLegenda = (d,i) => {
 
     if( clicked_diseases_legenda.has(d) ){
         clicked_diseases_legenda.delete(d)? null :console.error(`error removing ${d} from clicked_diseases_legenda (${clicked_diseases_legenda})`) ;
