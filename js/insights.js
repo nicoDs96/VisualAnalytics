@@ -39,7 +39,7 @@ var interactome= [];
 
 var useful_genes_list = new Set([]);
 
-var t0,t1, show_labels;
+var t0,t1, show_labels,tooltip;
 
 /*
     VIEW SETUP
@@ -147,6 +147,9 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
             d3.selectAll(".node-label").style("display","none");
         }
     });
+    //init tooltip
+    tooltip = d3.select("body").append("div").call(createTooltip);
+
 
 
 })();
@@ -305,6 +308,8 @@ async function draw_graph(data){
         .enter()
         .append("g")
         .attr("class","node")
+        .on("mouseover",showtooltip)
+        .on("mouseout",hidetooltip)
         .call(drag(simulation));
 
     let nodeLabels = node.append("text")
@@ -422,3 +427,35 @@ function clean_scene(){
         .attr('id','links-group');
 }
 
+createTooltip = el => {
+    el
+        .attr("class", "tooltip")
+        .style("border-radius", "3px")
+        .style("pointer-events", "none")
+        .style("display", "none")
+        .style("position", "absolute")
+        .style("z-index", "1000")
+        .style("padding-left", "12px")
+        .style("padding-right", "12px")
+        .style("font-weight", "regular")
+        .style("font-family", "Open Sans")
+        .style("font-size", "0.65em")
+        .style("background", "white")
+        .style("box-shadow", "0 0 10px rgba(0,0,0,.25)")
+        .style("color", "#333333")
+        .style("line-height", "1.6")
+        .style("pointer-events", "none");
+}
+
+showtooltip = (d)=>{
+    tooltip.style("display", null);
+    //console.log(); //.select(".node-circle").attr("disease")
+    let txt = `ID: ${d.id}<br>Symbol: ${d.symbol}<br>Involved in:${d3.select(d3.event.target).attr("disease")}`;
+    tooltip.html(`<p>${txt}</p>`)
+        .style("left", (d3.event.pageX) + "px")
+        .style("top", (d3.event.pageY - 28) + "px");
+}
+
+hidetooltip = (d)=>{
+    tooltip.style("display", "none");
+}
