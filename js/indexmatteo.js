@@ -1,4 +1,5 @@
 var selected_diseases = [];
+var clicked_diseases_legenda = new Set([]);
 
 function init_sidebar(){
     disease_gene_mapping.forEach(record =>{
@@ -81,9 +82,35 @@ function handleMouseOverLegenda() {
 }
 
 function handleMouseOutLegenda() {
-    d3.select(this).style("background-color","white");
+    d3.select(this).style("background-color","transparent");
 }
 
-function handleClickLegenda() {
+function handleClickLegenda(d,i) {
+
+    if( clicked_diseases_legenda.has(d) ){
+        clicked_diseases_legenda.delete(d)? null :console.error(`error removing ${d} from clicked_diseases_legenda (${clicked_diseases_legenda})`) ;
+        d3.select(d3.event.target).style("background-color","transparent");
+    }
+    else{
+        if(d !== null){ //important to ensure a correct behaviour when onmouseout from nodes-circles
+            clicked_diseases_legenda.add(d);
+            d3.select(d3.event.target).style("background-color","rgba(150, 150, 150, .3)");
+        }
+    }
+
+    if(clicked_diseases_legenda.size > 0){
+        d3.selectAll('.node-circle').style("opacity", 0.3).style("fill", "#aaaaaa");
+        d3.selectAll('.node-label').style("opacity", 0.3);
+        //highlight relevant nodes and labels
+        clicked_diseases_legenda.forEach(disease =>{
+            d3.selectAll(`[disease~="${disease.replace(/[ ]+/g,"-")}"]`)
+                .style("opacity", 0.7)
+                .style("fill", get_color);
+        });
+    }else{
+        d3.selectAll(`.node-circle`).style("opacity", 0.7).style("fill", get_color);
+        d3.selectAll(`.node-label`).style("opacity", 0.7).style("fill", get_color);
+    }
+
 
 }

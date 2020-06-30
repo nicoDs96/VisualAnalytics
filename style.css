@@ -7,15 +7,24 @@
     padding-right: 4px;
 }
 
+/*LEGEND STYLE*/
 #legenda {
     position: absolute;
-    top:8%;
+    top:2%;
     left:0;
-    #border-style: solid;
+    /*border-style: solid;*/
     padding-left: 4px;
     padding-right: 4px;
     background-color: transparent;
 }
+#legenda > *{
+    background-color: transparent;
+}
+span {
+    padding-left: 5px;
+}
+
+
 #controls {
     position: absolute;
     top:0;
@@ -31,10 +40,5 @@
     margin: 0px;
 }
 
-span {
-    padding-left: 5px;
-}
 
-#legenda > *{
-    background-color: transparent;
-}
+

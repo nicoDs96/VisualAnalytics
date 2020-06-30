@@ -336,44 +336,9 @@ async function draw_graph(data){
         .style("fill", get_color)
         .style("opacity", 0.7)
         .call(drag(simulation))
-        .on("mouseover", mouse_over)
-        .on("mouseout", mouse_out);
+        .on("mouseover", circle_mouse_over)
+        .on("mouseout", circle_mouse_out);
 
-    function mouse_over(d,i){
-
-        //reduce visibility of nodes and text
-        d3.selectAll('.node-circle').style("opacity", 0.3).style("fill", "#aaaaaa");
-        d3.selectAll('.node-label').style("opacity", 0.3);
-        //highlight relevant nodes and labels
-        d3.selectAll(`[disease~="${d.disease}"]`)
-            .style("opacity", 0.7)
-            .style("fill", get_color)
-            .style("font-size", "0.75em");
-
-    }
-    function mouse_out(d,i){
-        d3.selectAll('.node').style("opacity", 1);
-        d3.selectAll('.node-circle').style("opacity", 0.7).style("fill", get_color );
-        d3.selectAll('.node-label').style("opacity", 1).style("font-size", "0.65em");
-
-
-    }
-    function get_color(d,i){
-        //gives color associated to a disease to the gene in the disease
-        // r black if it is a linked gene but not specific of the disease
-        let disease_genes_list = disease_gene_mapping.find(record => record.Diseases.replace(/[ ]+/g,"-")===d.disease);
-        if(disease_genes_list===undefined){
-            console.error(`error in get_color function: can not find the genes list of ${d.disease} -> 
-                disease_gene_mapping.find returned ${disease_genes_list}`);
-        }
-        let disease_genes_set = new Set(disease_genes_list.Genes.split(","));
-        if( disease_genes_set.has(d.id) ){
-            return color(d.disease);
-        }
-        //return color("not-"+d.disease);
-        return "#000000"
-
-    }
     function add_disease_attr(d,i){
         let diseases = d3.selectAll(`[symbol="${d.symbol}"]`).attr("disease");
         if (diseases === null){ //if this is the first time we see the node set disease attribute directly
@@ -458,4 +423,40 @@ showtooltip = (d)=>{
 
 hidetooltip = (d)=>{
     tooltip.style("display", "none");
+}
+
+circle_mouse_over = (d,i)=>{
+
+    //reduce visibility of nodes and text
+    d3.selectAll('.node-circle').style("opacity", 0.3).style("fill", "#aaaaaa");
+    d3.selectAll('.node-label').style("opacity", 0.3);
+    //highlight relevant nodes and labels
+    d3.selectAll(`[disease~="${d.disease}"]`)
+        .style("opacity", 0.7)
+        .style("fill", get_color)
+        .style("font-size", "0.75em");
+
+}
+circle_mouse_out = (d,i) => {
+    d3.selectAll('.node').style("opacity", 1);
+    d3.selectAll('.node-circle').style("opacity", 0.7).style("fill", get_color );
+    d3.selectAll('.node-label').style("opacity", 1).style("font-size", "0.65em");
+    handleClickLegenda(null);
+}
+
+get_color = (d,i)=>{
+    //gives color associated to a disease to the gene in the disease
+    // r black if it is a linked gene but not specific of the disease
+    let disease_genes_list = disease_gene_mapping.find(record => record.Diseases.replace(/[ ]+/g,"-")===d.disease);
+    if(disease_genes_list===undefined){
+        console.error(`error in get_color function: can not find the genes list of ${d.disease} -> 
+                disease_gene_mapping.find returned ${disease_genes_list}`);
+    }
+    let disease_genes_set = new Set(disease_genes_list.Genes.split(","));
+    if( disease_genes_set.has(d.id) ){
+        return color(d.disease);
+    }
+    //return color("not-"+d.disease);
+    return "#000000"
+
 }
