@@ -52,7 +52,6 @@ function handleClickSidebar() {
 }
 
 function initLegenda(){
-    console.log(selected_diseases);
     d3.select("#legenda")
         .selectAll("p").remove(); //added because exit section introduce a bug in the visualization fo the legend
     let record = d3.select("#legenda")
