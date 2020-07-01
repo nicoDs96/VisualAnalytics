@@ -27,20 +27,14 @@ span {
     position: absolute;
     top:0;
     left:40%;
-<<<<<<< HEAD
     border-style: solid;
-=======
->>>>>>> a9487e8379d4c7ba2f7f207797f2af43ec99929e
     padding-left: 4px;
     padding-right: 4px;
 }
 
 .filterelem {
     text-align: left;
-<<<<<<< HEAD
     border-bottom-style: groove;
-=======
->>>>>>> a9487e8379d4c7ba2f7f207797f2af43ec99929e
     margin: 0px;
 }
 
