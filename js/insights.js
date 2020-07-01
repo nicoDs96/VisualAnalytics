@@ -45,10 +45,10 @@ var t0,t1, show_labels,tooltip, new_interactome;
     VIEW SETUP
 * */
 var margin = {top: 20, right: 20, bottom: 30, left: 40};
-var width = 1050 - margin.left - margin.right; //todo: ho cambiato w and h
-var height = 800 - margin.top - margin.bottom;
+var width = 600 - margin.left - margin.right;
+var height = 600 - margin.top - margin.bottom;
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#network").append("svg")
     .attr("id", "canvas")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -152,8 +152,6 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     });
     //init tooltip
     tooltip = d3.select("body").append("div").call(createTooltip);
-
-
 
 })();
 
@@ -285,8 +283,8 @@ async function draw_graph(data){
     let simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
         .force("link", d3.forceLink(data.links).id(d => d.id))
         .force("charge", d3.forceManyBody().strength(-30))
-        .force("x", d3.forceX().strength(0.05))
-        .force("y", d3.forceY().strength(0.08));
+        .force("x", d3.forceX().strength(0.1))
+        .force("y", d3.forceY().strength(0.12));
 
     //init links
     let link = svg.select("#links-group")
@@ -334,7 +332,7 @@ async function draw_graph(data){
         .attr("class", "node-circle")
         .attr("symbol", d => d.symbol)
         .attr("disease",  add_disease_attr)
-        .attr("r", 5)
+        .attr("r", 3)
         //.style("fill", d =>{ color(d.disease) })
         .style("fill", get_color)
         .style("opacity", 0.7)
@@ -342,7 +340,7 @@ async function draw_graph(data){
         .on("mouseover", circle_mouse_over)
         .on("mouseout", circle_mouse_out);
 
-    function add_disease_attr(d,i){
+    function add_disease_attr(d,i){ //append metadata to nodes
         let diseases = d3.selectAll(`[symbol="${d.symbol}"]`).attr("disease");
         if (diseases === null){ //if this is the first time we see the node set disease attribute directly
             return d.disease;
