@@ -15,7 +15,6 @@
     /*border-style: solid;*/
     padding-left: 4px;
     padding-right: 4px;
-    background-color: transparent;
 }
 #legenda > *{
     background-color: transparent;
@@ -28,15 +27,13 @@ span {
 #controls {
     position: absolute;
     top:0;
-    left:50%;
-    #border-style: solid;
+    left:40%;
     padding-left: 4px;
     padding-right: 4px;
 }
 
 .filterelem {
     text-align: left;
-    #border-bottom-style: groove;
     margin: 0px;
 }
 

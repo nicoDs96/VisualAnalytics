@@ -39,7 +39,7 @@ var interactome= [];
 
 var useful_genes_list = new Set([]);
 
-var t0,t1, show_labels,tooltip;
+var t0,t1, show_labels,tooltip, new_interactome;
 
 /*
     VIEW SETUP
@@ -65,7 +65,7 @@ svg.append("g")
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 //init the environment
-(async  ()=>{
+(init_env = async  ()=>{
 
     /*
     * READ ALL DATA
