@@ -35,11 +35,7 @@ function handleClickSidebar() {
     else{
         return;
     }
-        /*
-        --------------------------------------------------------------------
-          SELECT A DISEASE AND DRAW THE INTERACTOME OF THE DISEASE'S GENES
-        --------------------------------------------------------------------
-        */
+
         let input_array=[];
         selected_diseases.forEach(sel_dis=>{
             let innput_record = disease_gene_mapping.find( record=> record.Diseases === sel_dis)
@@ -114,3 +110,28 @@ handleClickLegenda = (d,i) => {
 
 
 }
+
+function init_drugs_filters(){
+        d3.select("#select-state")
+                .selectAll("option")
+                .data(drug_gene_mapping)
+                .enter().append("option")
+                .text(function(d) { return d["Drug Name"]; })
+                .attr("value", function (d) {
+                    return d["Drug Name"];
+                });
+
+    $(document).ready(function () {
+        $('select').selectize({
+            sortField: 'text'
+        });
+    });
+}
+
+function drugsfunction(){
+    console.log(document.getElementById("select-state").value);
+}
+
+
+
+

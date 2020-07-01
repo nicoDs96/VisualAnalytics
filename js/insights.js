@@ -45,10 +45,11 @@ var t0,t1, show_labels,tooltip;
     VIEW SETUP
 * */
 var margin = {top: 20, right: 20, bottom: 30, left: 40};
-var width = 1200 - margin.left - margin.right;
+var width = 1050 - margin.left - margin.right; //todo: ho cambiato w and h
 var height = 800 - margin.top - margin.bottom;
 
 var svg = d3.select("body").append("svg")
+    .attr("id", "canvas")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .attr("viewBox", [-width / 2, -height / 2, width, height]);
@@ -86,7 +87,6 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     //load drug-gene mapping
     t0 = performance.now();
     await d3.tsv('new_data/03_Drug-target.tsv', (record) =>{
-
         drug_gene_mapping.push(record);
         //if gene is not in  useful_genes_list add it to the list
         record["Target Entrez Gene IDs"].split(";").forEach(gene=>{
@@ -132,6 +132,9 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     //Init sidebar
     init_sidebar();
+    //Init drugs filters
+    init_drugs_filters(); //todo: inizializzare a comparsa quando c'è almeno ina malattia selezionata
+
     clean_scene(); //clean-init svg container
     //insert checkbox to show_labels
     let lbl =  d3.select("#controls").append("label")

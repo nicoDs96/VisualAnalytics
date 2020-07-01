@@ -4,15 +4,21 @@
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">    
 		<title>Interactome Analytics</title>
 		<script type="text/javascript" src="js/lib/d3.v5.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<!--<script type="text/javascript" src="js/lib/d3.v4.7.js"></script>-->
 	</head>
 	<body>
-		<div id="legenda">
-		</div>
-		<div id="controls">
-
-		</div>
+		<div id="legenda"></div>
+	<div id="drugs">
+		<h2>Drugs:</h2>
+		<select id="select-state" placeholder="Select a drug..." onchange="drugsfunction()">
+			<option value="" selected="selected"> </option>
+		</select>
+	</div>
+		<div id="controls"></div>
 		<div id="filters">
 			<h2 style="margin-bottom: 0px">Diseases:</h2>
 			<text>Max 5 selections</text><br/><br/>

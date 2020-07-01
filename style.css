@@ -7,12 +7,11 @@
     padding-right: 4px;
 }
 
-/*LEGEND STYLE*/
 #legenda {
     position: absolute;
-    top:2%;
+    top:0;
     left:0;
-    /*border-style: solid;*/
+    border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
     background-color: transparent;
@@ -28,17 +27,29 @@ span {
 #controls {
     position: absolute;
     top:0;
-    left:50%;
-    #border-style: solid;
+    left:40%;
+    border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
 }
 
 .filterelem {
     text-align: left;
-    #border-bottom-style: groove;
+    border-bottom-style: groove;
     margin: 0px;
 }
 
+#canvas {
+    position: absolute;
+    top: 20%;
+    left: 2%;
+    border-style: solid;
+}
 
-
+#drugs{
+    position: absolute;
+    top: 0;
+    right: 20%;
+    border-style: solid;
+    width: 300px;
+}
