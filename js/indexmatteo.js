@@ -21,7 +21,7 @@ function handleMouseOutSidebar() {
     if(selected_diseases.includes(d3.select(this).text())){
         d3.select(this).style("background-color","rgba(51, 170, 51, .3)");
     }else{
-    d3.select(this).style("background-color","white");
+    d3.select(this).style("background-color","transparent");
     }
 }
 
