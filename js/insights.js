@@ -18,16 +18,6 @@ Array [ Object { "Drug Name": "Abarelix",
 var drug_gene_mapping = [];
 
 /*
-Array [ Object { "Drug Name": "Abacavir",
-                 "Drug Indications": "For the treatment of HIV-1 [...]",
-                 "Disease Name": "HIV",
-                 "Disease Gene Names": "CCL5;IL10;CCR2;CCR5",
-                 "Disease Gene Entrez Gene IDs": "6352;3586;1231;1234" }
-      ...]
-* */
-var drug_disease_mapping = [];
-
-/*
 Array [ Object { gene_ID_1: "1",
                  gene_ID_2: "6622",
                  gene_symbol_1: "A1BG",
@@ -96,20 +86,6 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     t1 = performance.now();
     console.log(`Read and process of 03_Drug-target.tsv took ${t1 - t0} milliseconds.`);
-
-    //load drug-disease mapping
-    t0 = performance.now();
-    await d3.tsv('new_data/04_Drug-disease.tsv', (record) =>{
-
-        drug_disease_mapping.push(record);
-
-        record["Disease Gene Entrez Gene IDs"].split(";").forEach(gene=>{
-            useful_genes_list.add(parseInt(gene));
-        });
-
-    });
-    t1 = performance.now();
-    console.log(`Read and process of 04_Drug-disease.tsv took ${t1 - t0} milliseconds.`);
 
     //load interactome
     t0 = performance.now();
