@@ -89,12 +89,10 @@ handleClickLegenda = (d,i) => {
 
     if( clicked_diseases_legenda.has(d) ){
         clicked_diseases_legenda.delete(d)? null :console.error(`error removing ${d} from clicked_diseases_legenda (${clicked_diseases_legenda})`) ;
-        d3.select(d3.event.target).style("background-color","transparent");
     }
     else{
         if(d !== null){ //important to ensure a correct behaviour when onmouseout from nodes-circles
             clicked_diseases_legenda.add(d);
-            d3.select(d3.event.target).style("background-color","rgba(150, 150, 150, .3)"); //use target.parentElement to get p
         }
     }
 
