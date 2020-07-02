@@ -141,16 +141,14 @@ function drugsfunction(){
     }
     let drugrecord = drug_gene_mapping.find( record=> record["Drug Name"] === mydrug);
     drugrecord["Target Entrez Gene IDs"].split(";").forEach(drugid=>{
-        console.log(drugid);
         var drugtransition = d3.transition()
-            .duration(1000)
+            .duration(2000)
             .ease(d3.easeLinear);
-        d3.selectAll(".nodes-circles").filter((d)=>{
-            console.log("dentro la filter");
-            console.log(d.id);
+        d3.selectAll(".node-circle").filter((d)=>{
+            d.id === drugid?console.log(d.id):null;
             return d.id === drugid
         }).transition(drugtransition)
-            .style("r", 8);
+            .attr("r", 8);
     });
 
 }
