@@ -123,6 +123,8 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     //init tooltip
     tooltip = d3.select("body").append("div").call(createTooltip);
 
+    await draw_scatterplot( mds_classic(get_diseases_distance_matrix(),2)  );
+
 })();
 
 display_nodes_labels = () =>{
