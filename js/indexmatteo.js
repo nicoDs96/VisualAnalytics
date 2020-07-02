@@ -110,6 +110,7 @@ handleClickLegenda = (d,i) => {
         d3.selectAll(`.node-label`).style("opacity", 0.7).style("fill", get_color);
     }
 
+    display_nodes_labels();
 
 }
 

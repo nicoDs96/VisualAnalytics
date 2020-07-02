@@ -119,18 +119,31 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     .attr("type","checkbox")
     .attr("id","show_labels")
     .attr("checked",null)
-    .on('change',()=>{
-        if(document.getElementById("show_labels").checked){
-            d3.selectAll(".node-label").style("display","block");
-        }else{
-            d3.selectAll(".node-label").style("display","none");
-        }
-    });
+    .on('change', display_nodes_labels);
     //init tooltip
     tooltip = d3.select("body").append("div").call(createTooltip);
 
 })();
 
+display_nodes_labels = () =>{
+    if(document.getElementById("show_labels").checked){
+        d3.selectAll(".node-label").style("display","block").style("font-size","70%");
+        //check for selected diseases from legenda
+        if( clicked_diseases_legenda.size > 0){ // show labels only for selected elements making text bigger
+            d3.selectAll(".node-label").style("display","none");
+
+            clicked_diseases_legenda.forEach(disease =>{
+                d3.selectAll(`.node-label[disease~="${disease.replace(/[ ]+/g,"-")}"]`)
+                    .style("display","block")
+                    .style("font-size","80%");
+            });
+
+        }
+    }else{
+        d3.selectAll(".node-label").style("display","none").style("font-size","70%");
+
+    }
+};
 
 /**
  * Draws the interactome filtered by genes from a given disease
@@ -298,7 +311,7 @@ async function draw_graph(data){
         .text(d => d.symbol)
         .style("display",()=>{ return document.getElementById("show_labels").checked? "block":"none" })
         .style("font-family","sans-serif")
-        .style("font-size","0.65em")
+        .style("font-size","0.65%")
         .style("font-weight","bold")
         .style("fill", get_color)
     ;
@@ -437,3 +450,4 @@ get_color = (d,i)=>{
     return "#000000"
 
 }
+
