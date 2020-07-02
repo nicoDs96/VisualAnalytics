@@ -1,6 +1,6 @@
 #filterscont {
     position: absolute;
-    top:0;
+    top:19vh;
     right:0;
     width: 19vw;
     height: 60vh;
@@ -59,11 +59,12 @@ span {
 
 #drugs{
     position: absolute;
-    top: 61.5vh;
+    top: 0;
     right: 0;
     border-style: solid;
     width: 19.5vw;
     height: 18vh;
+    padding-left: 4px;
 }
 
 #dim_red_plot{
