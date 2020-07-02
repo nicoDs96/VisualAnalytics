@@ -46,6 +46,7 @@ function handleClickSidebar() {
         draw_from_input(input_array);
         initLegenda();
         display_nodes_labels();
+        initdegreestat(); //todo: dovrebbe stare nella drawgraph
 
 }
 
@@ -175,6 +176,33 @@ function drugsfunction(){
 
 function intervalmessage() {
     d3.select("#drugsmessage").select("text").remove();
+}
+
+function initdegreestat(){
+    var centrality = new Map();
+    var i, first, second, third, fourth, fifth;
+    d3.selectAll(".node-circle").each(n=>{
+        i=0;
+        d3.selectAll(".link").each(l=>{
+            if(n.id === l.source.id || n.id === l.target.id){
+                i = i+1;
+            }
+        });
+        centrality.set(n.id,i);
+    });
+
+    first = [...centrality.entries()].reduce((a, e ) => e[1] > a[1] ? e : a);
+    centrality.delete(first[0]);
+    second = [...centrality.entries()].reduce((a, e ) => e[1] > a[1] ? e : a);
+    centrality.delete(second[0]);
+    third = [...centrality.entries()].reduce((a, e ) => e[1] > a[1] ? e : a);
+    centrality.delete(third[0]);
+    fourth = [...centrality.entries()].reduce((a, e ) => e[1] > a[1] ? e : a);
+    centrality.delete(fourth[0]);
+    fifth = [...centrality.entries()].reduce((a, e ) => e[1] > a[1] ? e : a);
+    centrality.delete(fifth[0]);
+
+    
 }
 
 
