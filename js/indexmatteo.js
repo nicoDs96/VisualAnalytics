@@ -36,7 +36,6 @@ function handleClickSidebar() {
     else{
         return;
     }
-
         let input_array=[];
         selected_diseases.forEach(sel_dis=>{
             let innput_record = disease_gene_mapping.find( record=> record.Diseases === sel_dis)
