@@ -17,7 +17,7 @@
 #legenda {
     position: absolute;
     top:0;
-    left:29vw;
+    left:21vw;
     z-index: 1;
     border-style: solid;
     padding-left: 4px;
@@ -33,7 +33,7 @@ span {
 
 #controls {
     position: absolute;
-    top:81vh;
+    top:80vh;
     right:0;
     width: 19vw;
     height: 5vh;
@@ -72,6 +72,6 @@ span {
     top: 0;
     left: 0;
     border-style: solid;
-    width: 29vw;
+    width: 29.3vw;
     height: 50vh;
 }
