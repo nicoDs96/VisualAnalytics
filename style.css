@@ -76,6 +76,15 @@ span {
     height: 50vh;
 }
 
+#histogram{
+    position: absolute;
+    top: 50vh;
+    left: 0;
+    border-style: solid;
+    width: 29.3vw;
+    height: 49vh;
+}
+
 #drugsmessage{
     position: absolute;
     top: 0;
