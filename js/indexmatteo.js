@@ -77,8 +77,12 @@ function handleMouseOverLegenda() {
     d3.select(this).style("background-color","grey");
 }
 
-function handleMouseOutLegenda() {
+function handleMouseOutLegenda(d) {
+    if( clicked_diseases_legenda.has(d) ){
+        d3.select(this).style("background-color","rgba(150, 150, 150, .3)");
+    }else{
     d3.select(this).style("background-color","transparent");
+    }
 }
 
 handleClickLegenda = (d,i) => {
