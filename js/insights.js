@@ -171,7 +171,7 @@ function draw_from_input(input_array){
         full_graph.nodes = full_graph.nodes.concat(filtered_interactome_graph.nodes)
         full_graph.links = full_graph.links.concat(filtered_interactome_graph.links)
     }
-    draw_graph(full_graph);
+    draw_graph(clean_graph(full_graph));
 
 }
 
@@ -198,7 +198,7 @@ function filter_interactome_graph(gene_set) {
     graph.links = [];
 
     gene_set.forEach( gene => {
-        let interaction = new_interactome.find( el =>{ return parseInt(el.gene_ID_1) == parseInt(gene) || parseInt(el.gene_ID_2) == parseInt(gene) })
+        let interaction = new_interactome.find( el =>{ return parseInt(el.gene_ID_1) === parseInt(gene) || parseInt(el.gene_ID_2) === parseInt(gene) })
         if(interaction !== undefined){
             let node1 = {};
             let node2 = {};
@@ -213,8 +213,10 @@ function filter_interactome_graph(gene_set) {
             link.source = interaction.gene_ID_1;
             link.target = interaction.gene_ID_2;
 
-            graph.links.push(link);
-            graph.nodes.push(node1, node2);
+            if(node1.id !== node2.id){
+                graph.links.push(link);
+                graph.nodes.push(node1,node2);
+            }
         }
     });
 
@@ -224,6 +226,20 @@ function filter_interactome_graph(gene_set) {
     }
     return graph;
 
+}
+
+clean_graph = (graph) => {
+    let new_graph = {};
+    new_graph.nodes = [];
+    new_graph.links = [];
+    graph.nodes.forEach( node =>{
+        if(new_graph.nodes.find(el=> el.id === node.id)===undefined){
+            new_graph.nodes.push(node);
+        }
+    });
+    new_graph.links = graph.links;
+    console.log(new_graph);
+    return new_graph;
 }
 
 /**
