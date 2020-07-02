@@ -131,7 +131,25 @@ function init_drugs_filters(){
 }
 
 function drugsfunction(){
-    console.log(document.getElementById("select-state").value);
+    let mydrug = document.getElementById("select-state").value;
+    if(mydrug === ""){
+        console.log("null");
+        return;
+    }
+    let drugrecord = drug_gene_mapping.find( record=> record["Drug Name"] === mydrug);
+    drugrecord["Target Entrez Gene IDs"].split(";").forEach(drugid=>{
+        console.log(drugid);
+        var drugtransition = d3.transition()
+            .duration(1000)
+            .ease(d3.easeLinear);
+        d3.selectAll(".nodes-circles").filter((d)=>{
+            console.log("dentro la filter");
+            console.log(d.id);
+            return d.id === drugid
+        }).transition(drugtransition)
+            .style("r", 8);
+    });
+
 }
 
 
