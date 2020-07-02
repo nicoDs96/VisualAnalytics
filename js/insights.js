@@ -109,7 +109,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
     //Init sidebar
     init_sidebar();
     //Init drugs filters
-    init_drugs_filters(); //todo: inizializzare a comparsa quando c'è almeno ina malattia selezionata
+    init_drugs_filters();
 
     clean_scene(); //clean-init svg container
     //insert checkbox to show_labels
