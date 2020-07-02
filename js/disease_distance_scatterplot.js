@@ -62,6 +62,15 @@ function zoomed() {
     gGrid.call(grid, zx, zy);
 }
 
+fix_domain_x = (d)=>{
+    if (d.x> 0) return d.x+0.2;
+    else return d.x-0.2 ;
+}
+fix_domain_y = (d)=>{
+    if (d.y> 0) return d.y+0.2;
+    else return d.y-0.2 ;
+}
+
 draw_scatterplot = (points) =>{
 
     data_sp = points.map( (el,idx)=>{
@@ -74,12 +83,13 @@ draw_scatterplot = (points) =>{
     console.log(data_sp);
 
     x=d3.scaleLinear()
-        .domain(d3.extent(data_sp, d=>{ return d.x;}))
-        .range([0.2,width_sp]);
+        .domain(d3.extent(data_sp, fix_domain_x))
+        .range([5,width_sp-5]);
 
     y=d3.scaleLinear()
-        .domain(d3.extent(data_sp, d=>{ return d.y;}))
-        .range([height_sp,0.2]);
+        .domain(d3.extent(data_sp, fix_domain_y))
+        //.domain(d3.extent(data_sp, d=>{ return d.y;}))
+        .range([height_sp-5,5]);
 
     radius = d3.scaleLinear().range([0.5,0.1]);
 
@@ -102,7 +112,7 @@ draw_scatterplot = (points) =>{
         .attr("d", d => `M ${x(d.x)},${y(d.y)} h0`)
         .attr("stroke", "rgba(16,3,96,.5)");
 
-    gx = svg_sp.append("g");
+    gx = svg_sp.append("g").attr("class","x-axis");
 
     gy = svg_sp.append("g");
 
