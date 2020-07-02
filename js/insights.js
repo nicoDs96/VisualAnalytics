@@ -173,7 +173,6 @@ function draw_from_input(input_array){
     }
     draw_graph(full_graph);
 
-
 }
 
 /**

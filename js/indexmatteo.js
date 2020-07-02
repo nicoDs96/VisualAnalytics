@@ -30,7 +30,8 @@ function handleClickSidebar() {
     if((selected_diseases.length < 5) && !selected_diseases.includes(d3.select(this).text())){
         selected_diseases.push(d3.select(this).text());
     }else if(selected_diseases.includes(d3.select(this).text())){
-        selected_diseases.splice(selected_diseases.indexOf(d3.select(this).text()),1);
+        let removed = selected_diseases.splice(selected_diseases.indexOf(d3.select(this).text()),1);
+        clicked_diseases_legenda.delete(removed[0]);
     }
     else{
         return;
@@ -45,6 +46,7 @@ function handleClickSidebar() {
         });
         draw_from_input(input_array);
         initLegenda();
+        display_nodes_labels();
 
 }
 
