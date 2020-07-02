@@ -1,4 +1,4 @@
-#filters {
+#filterscont {
     position: absolute;
     top:0;
     right:0;
@@ -7,8 +7,11 @@
     border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
-    overflow-y: auto;
+}
 
+#filters{
+    overflow-y: auto;
+    height: 45vh;
 }
 
 #legenda {
