@@ -2,15 +2,20 @@
     position: absolute;
     top:0;
     right:0;
+    width: 19vw;
+    height: 60vh;
     border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
+    overflow-y: auto;
+
 }
 
 #legenda {
     position: absolute;
     top:0;
-    left:0;
+    left:29vw;
+    z-index: 1;
     border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
@@ -25,8 +30,10 @@ span {
 
 #controls {
     position: absolute;
-    top:0;
-    left:40%;
+    top:81vh;
+    right:0;
+    width: 19vw;
+    height: 5vh;
     border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
@@ -40,15 +47,27 @@ span {
 
 #canvas {
     position: absolute;
-    top: 20%;
-    left: 2%;
+    top: 0;
+    right: 20vw;
+    width: 50vw;
+    height: 99vh;
     border-style: solid;
 }
 
 #drugs{
     position: absolute;
-    top: 0;
-    right: 20%;
+    top: 61.5vh;
+    right: 0;
     border-style: solid;
-    width: 300px;
+    width: 19.5vw;
+    height: 18vh;
+}
+
+#dim_red_plot{
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-style: solid;
+    width: 29vw;
+    height: 50vh;
 }

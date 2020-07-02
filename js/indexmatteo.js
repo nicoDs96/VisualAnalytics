@@ -135,20 +135,27 @@ function init_drugs_filters(){
 
 function drugsfunction(){
     let mydrug = document.getElementById("select-state").value;
+    var drugtransition = d3.transition()
+        .duration(2000)
+        .ease(d3.easeLinear);
+    d3.selectAll(".node-circle").transition(drugtransition)
+        .attr("r", 3) //Todo: perchè si ingrandiscono i nodi?
+        .attr("stroke","transparent")
+        .attr("stroke-width",0);
     if(mydrug === ""){
         console.log("null");
         return;
     }
     let drugrecord = drug_gene_mapping.find( record=> record["Drug Name"] === mydrug);
     drugrecord["Target Entrez Gene IDs"].split(";").forEach(drugid=>{
-        var drugtransition = d3.transition()
-            .duration(2000)
-            .ease(d3.easeLinear);
+
+
         d3.selectAll(".node-circle").filter((d)=>{
-            d.id === drugid?console.log(d.id):null;
             return d.id === drugid
         }).transition(drugtransition)
-            .attr("r", 8);
+            .attr("r", 8)
+            .attr("stroke","black")
+            .attr("stroke-width",3);
     });
 
 }
