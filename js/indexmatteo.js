@@ -147,17 +147,35 @@ function drugsfunction(){
         return;
     }
     let drugrecord = drug_gene_mapping.find( record=> record["Drug Name"] === mydrug);
+    var flag = 0;
     drugrecord["Target Entrez Gene IDs"].split(";").forEach(drugid=>{
 
 
-        d3.selectAll(".node-circle").filter((d)=>{
+        var targetnodes = d3.selectAll(".node-circle").filter((d)=>{
             return d.id === drugid
-        }).transition(drugtransition)
-            .attr("r", 8)
+        });
+        if(targetnodes.size() > 0){
+            flag = 1;
+        }
+
+        targetnodes.transition(drugtransition)
+            .attr("r", 10)
             .attr("stroke","black")
             .attr("stroke-width",3);
     });
 
+    if(flag == 0){
+        d3.select("#drugsmessage").select("text").remove();
+        d3.select("#drugsmessage")
+            .append("text")
+            .style("color","red")
+            .text("No genes affected by "+mydrug);
+        setTimeout( intervalmessage, 3000);
+    }
+}
+
+function intervalmessage() {
+    d3.select("#drugsmessage").select("text").remove();
 }
 
 

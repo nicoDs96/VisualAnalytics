@@ -75,3 +75,13 @@ span {
     width: 29.3vw;
     height: 50vh;
 }
+
+#drugsmessage{
+    position: absolute;
+    top: 0;
+    left: 40vw;
+    border-style: solid;
+    width: 39vw;
+    height: 5vh;
+    text-align: right;
+}
