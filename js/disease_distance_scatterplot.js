@@ -113,6 +113,7 @@ draw_scatterplot = (points) =>{
         .join("path")
         .attr("d", d => `M ${x(d.x)},${y(d.y)} h0`)
         .attr("stroke", "rgba(16,3,96,.5)")
+        .attr("class","scatter-disease-path")
         .on("mouseover",showtooltip_sp)
         .on("mouseout",d => tooltip_sp.style("display", "none") )
         .on("click",handle_click_disease_path);
@@ -168,7 +169,7 @@ handle_click_disease_path = (d) => {
 
 }
 focus_sidebar_el = () =>{
-    d3.select("p[content]").style("background-color","transparent");
+    d3.selectAll("p[content]").style("background-color","transparent");
     selected_diseases.forEach(sel_dis=>{
         d3.select(`[content="${sel_dis.replace(/[ ]+/g,"-")}"]`).style("background-color","rgba(51, 170, 51, .3)");
     });
