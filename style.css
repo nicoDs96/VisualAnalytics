@@ -5,6 +5,7 @@
     width: 19vw;
     height: 58vh;
     border-style: solid;
+    border-left-style: none;
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -16,11 +17,13 @@
 
 #legenda {
     position: absolute;
-    top:78vh;
+    top:77.95vh;
     right:0;
-    width: 19vw;
-    height: 21vh;
+    width: 19.5vw;
+    height: 21.6vh;
     border-style: solid;
+    border-left-style: none;
+    border-top-style: none;
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -61,8 +64,9 @@ span {
     top: 0;
     right: 0;
     border-style: solid;
+    border-bottom-style: none;
     width: 19.5vw;
-    height: 18vh;
+    height: 18.5vh;
     padding-left: 4px;
 }
 
@@ -71,6 +75,7 @@ span {
     top: 0;
     left: 0;
     border-style: solid;
+    border-bottom-style: none;
     width: 29.3vw;
     height: 50vh;
 }
