@@ -30,9 +30,15 @@ function handleClickSidebar() {
 
     if((selected_diseases.length < 5) && !selected_diseases.includes(d3.select(this).text())){
         selected_diseases.push(d3.select(this).text());
+
+        d3.selectAll(".scatter-disease-path")
+            .filter( el=>el.disease===d3.select(this).text() )
+            .attr("stroke", d=> color(d.disease.replace(/[ ]+/g,"-")) );
     }else if(selected_diseases.includes(d3.select(this).text())){
         let removed = selected_diseases.splice(selected_diseases.indexOf(d3.select(this).text()),1);
         clicked_diseases_legenda.delete(removed[0]);
+
+        d3.selectAll(".scatter-disease-path").filter( el=>el.disease===d3.select(this).text() ).attr("stroke", "rgba(16,3,96,.5)" );
     }
     else{
         return;
