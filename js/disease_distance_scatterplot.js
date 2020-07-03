@@ -6,7 +6,7 @@
 
 var margin_sp = {top: 20, bottom: 20, left:40, right:20};
 var completeWidth_sp=document.getElementById("dim_red_plot").offsetWidth;
-var completeHeight_sp=document.getElementById("dim_red_plot").offsetHeight - 0.1*document.getElementById("dim_red_plot").offsetHeight;
+var completeHeight_sp=document.getElementById("dim_red_plot").offsetHeight - 0.2*document.getElementById("dim_red_plot").offsetHeight;
 var width_sp = completeWidth_sp - margin_sp.left - margin_sp.right;
 var height_sp = completeHeight_sp -margin_sp.top - margin_sp.bottom;
 
