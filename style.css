@@ -76,7 +76,7 @@ span {
     height: 50vh;
 }
 
-#histogram{
+#barplot{
     position: absolute;
     top: 50vh;
     left: 0;

@@ -203,13 +203,15 @@ function initdegreestat(){
     centrality.delete(fifth[0]);
 
 
+
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 30, bottom: 30, left: 40},
         width = 395 - margin.left - margin.right,
         height = 301 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    var svg = d3.select("#histogram")
+    d3.select("#barplot").select("svg").remove();
+    var svg = d3.select("#barplot")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -217,43 +219,43 @@ function initdegreestat(){
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    // X axis: scale and draw:
+    // Add X axis
     var x = d3.scaleLinear()
-        .domain([0, 1000])
-        .range([0, width]);
+        .domain([0, 10])
+        .range([ 0, width]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("text-anchor", "end");
 
-    /*
-    // set the parameters for the histogram
-    var histogram = d3.histogram()
-        .value(function(d) { return d.price; })   // I need to give the vector of value
-        .domain(x.domain())  // then the domain of the graphic
-        .thresholds(x.ticks(70)); // then the numbers of bins
-
-    // And apply this function to data to get the bins
-    var bins = histogram(data);
-
-    // Y axis: scale and draw:
-    var y = d3.scaleLinear()
-        .range([height, 0]);
-    y.domain([0, d3.max(bins, function(d) { return d.length; })]);   // d3.hist has to be called before the Y axis obviously
+    // Y axis
+    var y = d3.scaleBand()
+        .range([ 0, height ])
+        .domain([first[0],second[0],third[0],fourth[0],fifth[0]])
+        .padding(.1);
     svg.append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y))
 
-    // append the bar rectangles to the svg element
-    svg.selectAll("rect")
-        .data(bins)
+    //Bars
+    var data = [first,second,third,fourth,fifth];
+    svg.selectAll("myRect")
+        .data(data)
         .enter()
         .append("rect")
-        .attr("x", 1)
-        .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
-        .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
-        .attr("height", function(d) { return height - y(d.length); })
-        .style("fill", "#69b3a2")
+        .attr("x", x(0) )
+        .attr("y", function(d) { return y(d[0]); })
+        .attr("width", "0")
+        .attr("height", y.bandwidth() )
+        .attr("fill", "#69b3a2")
 
-     */
+    // Animation
+    svg.selectAll("rect")
+        .transition()
+        .duration(800)
+        .attr("width", function(d) { return x(d[1]); })
+        .delay(function(d,i){console.log(i) ; return(i*100)})
 }
 
 
