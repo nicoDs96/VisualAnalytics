@@ -157,11 +157,12 @@ handle_click_disease_path = (d) => {
             input_array.push(innput_record);
         }
     });
-    console.log(input_array);
+
     draw_from_input(input_array);
     initLegenda();
     display_nodes_labels();
     focus_sidebar_el();
+    initdegreestat();
 
 }
 focus_sidebar_el = () =>{
