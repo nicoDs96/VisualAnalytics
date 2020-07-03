@@ -254,12 +254,20 @@ function initdegreestat(){
         .attr("height", y.bandwidth() )
         .attr("fill", "#69b3a2")
 
+    svg.append("line")
+        .attr("stroke-width",3)
+        .attr("x1", x(average))
+        .attr("y1", y(0))
+        .attr("x2", x(average))
+        .attr("y2", y.bandwidth());
+
+
     // Animation
     svg.selectAll("rect")
         .transition()
         .duration(800)
         .attr("width", function(d) { return x(d[1]); })
-        .delay(function(d,i){console.log(i) ; return(i*100)})
+        .delay(function(d,i){ return(i*100)})
 }
 
 
