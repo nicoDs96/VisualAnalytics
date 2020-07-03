@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}
+
+\bibitem{ivapp19}
+Marco Angelini., Graziano Blasilli., Lorenzo Farina., Simone Lenti., and
+  Giuseppe Santucci.
+\newblock Nemesis (network medicine analysis): Towards visual exploration of
+  network medicine data.
+\newblock In {\em Proceedings of the 14th International Joint Conference on
+  Computer Vision, Imaging and Computer Graphics Theory and Applications -
+  Volume 3 IVAPP: IVAPP,}, pages 322--329. INSTICC, SciTePress, 2019.
+
+\bibitem{d3}
+Mike Bostock.
+\newblock D3.js a data driven document manipulation library.
+
+\bibitem{mds_js}
+Ben Frederickson.
+\newblock Mds javascript implementation, 2015.
+
+\end{thebibliography}
