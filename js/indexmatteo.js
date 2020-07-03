@@ -190,7 +190,7 @@ function initdegreestat(){
                 i = i+1;
             }
         });
-        centrality.set(n.id,i);
+        centrality.set(n.symbol,i);
         average = average + i;
     });
 
@@ -240,7 +240,7 @@ function initdegreestat(){
         .domain([first[0],second[0],third[0],fourth[0],fifth[0]])
         .padding(.1);
     svg.append("g")
-        .call(d3.axisLeft(y))
+        .call(d3.axisLeft(y));
 
     //Bars
     var data = [first,second,third,fourth,fifth];
@@ -252,22 +252,28 @@ function initdegreestat(){
         .attr("y", function(d) { return y(d[0]); })
         .attr("width", "0")
         .attr("height", y.bandwidth() )
-        .attr("fill", "#69b3a2")
+        .attr("fill", "#69b3a2");
 
     svg.append("line")
+        .attr("id","averageline")
         .attr("stroke-width",3)
+        .attr("stroke", "black")
         .attr("x1", x(average))
         .attr("y1", y(0))
         .attr("x2", x(average))
-        .attr("y2", y.bandwidth());
-
+        .attr("y2", y(0));
 
     // Animation
     svg.selectAll("rect")
         .transition()
-        .duration(800)
+        .duration(1000)
         .attr("width", function(d) { return x(d[1]); })
-        .delay(function(d,i){ return(i*100)})
+        .delay(function(d,i){ return(i*100)});
+    svg.select("#averageline")
+        .transition()
+        .duration(1000)
+        .attr("y2", height)
+        .delay(600);
 }
 
 
