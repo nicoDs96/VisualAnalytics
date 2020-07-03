@@ -142,9 +142,11 @@ handle_click_disease_path = (d) => {
 
     if( (selected_diseases.length < 5) && !selected_diseases.includes(d.disease) ){
         selected_diseases.push(d.disease);
+        d3.select(d3.event.target).attr("stroke", color(d.disease.replace(/[ ]+/g,"-")) );
     }else if(selected_diseases.includes(d.disease)){
             let removed = selected_diseases.splice(selected_diseases.indexOf(d.disease),1);
             clicked_diseases_legenda.delete(removed[0]);
+            d3.select(d3.event.target).attr("stroke", "rgba(16,3,96,.5)" );
         }
         else{
             return; //for error prevention
