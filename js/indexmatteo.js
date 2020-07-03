@@ -146,9 +146,7 @@ function drugsfunction(){
         .duration(2000)
         .ease(d3.easeLinear);
     d3.selectAll(".node-circle").transition(drugtransition)
-        .attr("r", 3) //Todo: perchè si ingrandiscono i nodi?
-        .attr("stroke","transparent")
-        .attr("stroke-width",0);
+        .attr("r", 3);
     if(mydrug === ""){
         console.log("null");
         return;
