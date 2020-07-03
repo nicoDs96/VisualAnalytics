@@ -6,6 +6,7 @@ function init_sidebar(){
         d3.select("#filters")
             .append("p").text(record.Diseases)
             .attr("class","filterelem")
+            .attr("content",record.Diseases.replace(/[ ]+/g,"-"))
             .on("mouseover", handleMouseOverSidebar)
             .on("mouseout", handleMouseOutSidebar)
             .on("click", handleClickSidebar);

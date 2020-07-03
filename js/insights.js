@@ -240,7 +240,6 @@ clean_graph = (graph) => {
         }
     });
     new_graph.links = graph.links;
-    console.log(new_graph);
     return new_graph;
 }
 
