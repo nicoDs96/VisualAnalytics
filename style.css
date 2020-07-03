@@ -3,7 +3,7 @@
     top:19vh;
     right:0;
     width: 19vw;
-    height: 60vh;
+    height: 58vh;
     border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
@@ -11,14 +11,15 @@
 
 #filters{
     overflow-y: auto;
-    height: 45vh;
+    height: 43vh;
 }
 
 #legenda {
     position: absolute;
-    top:0;
-    left:21vw;
-    z-index: 1;
+    top:78vh;
+    right:0;
+    width: 19vw;
+    height: 21vh;
     border-style: solid;
     padding-left: 4px;
     padding-right: 4px;
@@ -33,11 +34,9 @@ span {
 
 #controls {
     position: absolute;
-    top:80vh;
-    right:0;
-    width: 19vw;
-    height: 5vh;
-    border-style: solid;
+    z-index: 1;
+    top:43vw;
+    left:67vw;
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -89,7 +88,6 @@ span {
     position: absolute;
     top: 0;
     left: 40vw;
-    border-style: solid;
     width: 39vw;
     height: 5vh;
     text-align: right;

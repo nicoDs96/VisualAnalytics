@@ -211,6 +211,7 @@ function initdegreestat(){
     centrality.delete(fourth[0]);
     fifth = [...centrality.entries()].reduce((a, e ) => e[1] > a[1] ? e : a);
     centrality.delete(fifth[0]);
+    var averageboxes = (first[1]+second[1]+third[1]+fourth[1]+fifth[1])/5;
 
 
 
@@ -263,10 +264,10 @@ function initdegreestat(){
     svg.append("line")
         .attr("id","averageline")
         .attr("stroke-width",3)
-        .attr("stroke", "black")
-        .attr("x1", x(average))
+        .attr("stroke", "red")
+        .attr("x1", x(averageboxes))
         .attr("y1", y(0))
-        .attr("x2", x(average))
+        .attr("x2", x(averageboxes))
         .attr("y2", y(0));
 
     // Animation
