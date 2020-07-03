@@ -187,6 +187,7 @@ function intervalmessage() {
 
 function initdegreestat(){
     d3.select("#barplot").select("svg").remove();
+    d3.select("#averageglobalvalue").remove();
     var centrality = new Map();
     var i, first, second, third, fourth, fifth;
     var average = 0;
@@ -258,8 +259,11 @@ function initdegreestat(){
         .attr("y", function(d) { return y(d[0]); })
         .attr("width", "0")
         .attr("height", y.bandwidth() )
-        .attr("fill", "#69b3a2");
+        .attr("fill", "#69b3a2")
+        .on("mouseover", handleMouseoverBar)
+        .on("mouseout", handleMouseoutBar);
 
+    //Average line
     svg.append("line")
         .attr("id","averageline")
         .attr("stroke-width",3)
@@ -268,6 +272,25 @@ function initdegreestat(){
         .attr("y1", y(0))
         .attr("x2", x(averageboxes))
         .attr("y2", y(0));
+
+    //Average value
+    svg.append("text")
+        .text(averageboxes)
+        .attr("id","averagevalue")
+        .attr("x", x(averageboxes+0.1))
+        .attr("y", y(0))
+        .attr("font-size",15)
+        .attr("opacity",0);
+
+    //Average global value
+    d3.select("body").append("p")
+        .attr("id","averageglobalvalue")
+        .style("position", "absolute")
+        .style("top", "52vh")
+        .style("left", "16vw")
+        .style("width", "10vw")
+        .style("height", "4vh")
+        .text("Global average: "+average.toFixed(2));
 
     // Animation
     svg.selectAll("rect")
@@ -278,8 +301,26 @@ function initdegreestat(){
     svg.select("#averageline")
         .transition()
         .duration(1000)
-        .attr("y2", height)
+        .attr("y2", height+30)
         .delay(600);
+    svg.select("#averagevalue")
+        .transition()
+        .duration(1000)
+        .attr("y", height+30)
+        .attr("opacity",1)
+        .delay(600);
+}
+
+handleMouseoverBar = (d) => {
+    d3.selectAll(".node-circle").filter((n)=>{
+        return d[0] === n.symbol;
+    }).attr("r",10);
+}
+
+handleMouseoutBar = (d) => {
+    d3.selectAll(".node-circle").filter((n)=>{
+        return d[0] === n.symbol;
+    }).attr("r",3);
 }
 
 

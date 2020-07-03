@@ -1,9 +1,21 @@
+#title{
+    position: absolute;
+    top:-3.6vh;
+    left:29.6vw;
+    width: 50.4vw;
+    height: 8vh;
+    text-align: center;
+    background-color: khaki;
+    padding-top: 15px;
+}
+
 #filterscont {
     position: absolute;
     top:19vh;
     right:0;
     width: 19vw;
     height: 58vh;
+    border-color: darkgray;
     border-style: solid;
     border-left-style: none;
     padding-left: 4px;
@@ -20,12 +32,14 @@
     top:77.95vh;
     right:0;
     width: 19.5vw;
-    height: 21.6vh;
+    height: 19.1vh;
+    border-color: darkgray;
     border-style: solid;
     border-left-style: none;
     border-top-style: none;
     padding-left: 4px;
     padding-right: 4px;
+    padding-top: 15px;
 }
 #legenda > *{
     background-color: transparent;
@@ -46,16 +60,16 @@ span {
 
 .filterelem {
     text-align: left;
-    border-bottom-style: groove;
     margin: 0px;
 }
 
 #canvas {
     position: absolute;
-    top: 0;
+    top: 10vh;
     right: 20vw;
     width: 50.05vw;
-    height: 99vh;
+    height: 89vh;
+    border-color: darkgray;
     border-style: solid;
 }
 
@@ -63,6 +77,7 @@ span {
     position: absolute;
     top: 0;
     right: 0;
+    border-color: darkgray;
     border-style: solid;
     border-bottom-style: none;
     width: 19.5vw;
@@ -74,9 +89,9 @@ span {
     position: absolute;
     top: 0;
     left: 0;
+    border-color: darkgray;
     border-style: solid;
     border-bottom-style: none;
-    border-right-style: none;
     width: 29.3vw;
     height: 50vh;
 }
@@ -85,6 +100,7 @@ span {
     position: absolute;
     top: 50vh;
     left: 0;
+    border-color: darkgray;
     border-style: solid;
     border-right-style: none;
     width: 29.3vw;
@@ -93,7 +109,7 @@ span {
 
 #drugsmessage{
     position: absolute;
-    top: 0;
+    top: 10vh;
     left: 40vw;
     width: 39vw;
     height: 5vh;
