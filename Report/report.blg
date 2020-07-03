@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: report.aux
+The style file: unsrt.bst
+Database file #1: citazioni.bib
+Warning--entry type for "mds_js" isn't style-file defined
+--line 13 of file citazioni.bib
+Warning--entry type for "d3" isn't style-file defined
+--line 21 of file citazioni.bib
+You've used 3 entries,
+            1791 wiz_defined-function locations,
+            460 strings with 4012 characters,
+and the built_in function-call counts, 657 in all, are:
+= -- 54
+> -- 25
+< -- 1
++ -- 10
+- -- 7
+* -- 28
+:= -- 97
+add.period$ -- 8
+call.type$ -- 3
+change.case$ -- 3
+chr.to.int$ -- 0
+cite$ -- 3
+duplicate$ -- 31
+empty$ -- 75
+format.name$ -- 7
+if$ -- 158
+int.to.chr$ -- 0
+int.to.str$ -- 3
+missing$ -- 1
+newline$ -- 16
+num.names$ -- 3
+pop$ -- 17
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 25
+stack$ -- 0
+substring$ -- 28
+swap$ -- 13
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 5
+width$ -- 4
+write$ -- 30
+(There were 2 warnings)
