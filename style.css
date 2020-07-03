@@ -54,7 +54,7 @@ span {
     position: absolute;
     top: 0;
     right: 20vw;
-    width: 50vw;
+    width: 50.05vw;
     height: 99vh;
     border-style: solid;
 }
@@ -76,6 +76,7 @@ span {
     left: 0;
     border-style: solid;
     border-bottom-style: none;
+    border-right-style: none;
     width: 29.3vw;
     height: 50vh;
 }
@@ -85,6 +86,7 @@ span {
     top: 50vh;
     left: 0;
     border-style: solid;
+    border-right-style: none;
     width: 29.3vw;
     height: 49vh;
 }

@@ -53,7 +53,7 @@ function handleClickSidebar() {
         draw_from_input(input_array);
         initLegenda();
         display_nodes_labels();
-        initdegreestat(); //todo: dovrebbe stare nella drawgraph
+        initdegreestat();
 
 }
 
@@ -186,6 +186,7 @@ function intervalmessage() {
 }
 
 function initdegreestat(){
+    d3.select("#barplot").select("svg").remove();
     var centrality = new Map();
     var i, first, second, third, fourth, fifth;
     var average = 0;
@@ -221,7 +222,6 @@ function initdegreestat(){
         height = 250 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    d3.select("#barplot").select("svg").remove();
     var svg = d3.select("#barplot")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -238,7 +238,6 @@ function initdegreestat(){
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x))
         .selectAll("text")
-        .attr("transform", "translate(-10,0)rotate(-45)")
         .style("text-anchor", "end");
 
     // Y axis
