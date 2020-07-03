@@ -182,6 +182,7 @@ function intervalmessage() {
 function initdegreestat(){
     var centrality = new Map();
     var i, first, second, third, fourth, fifth;
+    var average = 0;
     d3.selectAll(".node-circle").each(n=>{
         i=0;
         d3.selectAll(".link").each(l=>{
@@ -190,8 +191,10 @@ function initdegreestat(){
             }
         });
         centrality.set(n.id,i);
+        average = average + i;
     });
 
+    average = average/centrality.size;
     first = [...centrality.entries()].reduce((a, e ) => e[1] > a[1] ? e : a);
     centrality.delete(first[0]);
     second = [...centrality.entries()].reduce((a, e ) => e[1] > a[1] ? e : a);
@@ -208,7 +211,7 @@ function initdegreestat(){
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 30, bottom: 30, left: 40},
         width = 395 - margin.left - margin.right,
-        height = 301 - margin.top - margin.bottom;
+        height = 250 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     d3.select("#barplot").select("svg").remove();
