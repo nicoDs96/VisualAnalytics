@@ -146,7 +146,10 @@ function drugsfunction(){
         .duration(2000)
         .ease(d3.easeLinear);
     d3.selectAll(".node-circle").transition(drugtransition)
-        .attr("r", 3);
+        .attr("r", 3)
+        .attr("stroke",null)
+        .attr("stroke-width",null);
+
     if(mydrug === ""){
         console.log("null");
         return;
