@@ -26,8 +26,8 @@ isbn={978-989-758-354-4},
 }
 
 @online{OMIM,
-  author = {McKusick-Nathans Institute of Genetic Medicine, Johns Hopkins University School of Medicine},
-  title = { OMIM, Online Mendelian Inheritance in Man},
-  url = {https://omim.org/about},
+  author,
+  title = { D3.js a Data Driven Document manipulation library},
+  url = {https://github.com/d3/},
   urldate = {2020-07-3}
 }

@@ -13,6 +13,11 @@ Marco Angelini., Graziano Blasilli., Lorenzo Farina., Simone Lenti., and
 Mike Bostock.
 \newblock D3.js a data driven document manipulation library.
 
+\bibitem{OMIM}
+Johns Hopkins University School of~Medicine McKusick-Nathans Institute~of
+  Genetic~Medicine.
+\newblock Omim, online mendelian inheritance in man.
+
 \bibitem{mds_js}
 Ben Frederickson.
 \newblock Mds javascript implementation, 2015.
