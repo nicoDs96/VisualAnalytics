@@ -188,7 +188,7 @@ function intervalmessage() {
 
 function initdegreestat(){
     d3.select("#barplot").select("svg").remove();
-    d3.select("#averageglobalvalue").remove();
+    d3.select("#averageglobalvalue").text("");
     var centrality = new Map();
     var i, first, second, third, fourth, fifth;
     var average = 0;
@@ -284,14 +284,7 @@ function initdegreestat(){
         .attr("opacity",0);
 
     //Average global value
-    d3.select("body").append("p")
-        .attr("id","averageglobalvalue")
-        .style("position", "absolute")
-        .style("top", "52vh")
-        .style("left", "16vw")
-        .style("width", "10vw")
-        .style("height", "4vh")
-        .text("Global average: "+average.toFixed(2));
+    console.log( d3.select("#averageglobalvalue").text("Global average: "+average.toFixed(2)));
 
     // Animation
     svg.selectAll("rect")
