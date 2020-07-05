@@ -84,6 +84,8 @@ The Top 5 Centrality View (Figure \ref{top5}) computes and show Centrality stati
 \end{figure}
 
 \subsection*{Coordination Between Views}
+In this paragraph we briefly summarize the coordination between views.\newline The scatterplot view is directly coordinated with the Interactome View and with the side disease selector, indirectly with the top 5 view, since triggering a selection will automatically change the displayed interactome and hence the top 5 centrality view.
+The top 5 centrality view is connected directly with the interactome graph since it allows to focus top 5 genes in the network as explained above. the network itself does not triggers changes on other components but it is affected by all of them. The legend acts on the network as explained above and it shares the same color schema with the interactome nodes and with the scatterplot points (recall colors represent diseases). The disease selector is coordinated together with the network and the scatterplot, the drug selector affects only the network.
 
 
 \subsection*{Analytics Summary}
