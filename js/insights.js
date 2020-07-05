@@ -35,8 +35,8 @@ var t0,t1, show_labels,tooltip, new_interactome;
     VIEW SETUP
 * */
 var margin = {top: 20, right: 20, bottom: 30, left: 40};
-var width = 600 - margin.left - margin.right;
-var height = 600 - margin.top - margin.bottom;
+var width = document.getElementById("network").offsetWidth; - margin.left - margin.right;
+var height = document.getElementById("network").offsetHeight; - margin.top - margin.bottom;
 
 var svg = d3.select("#network").append("svg")
     .attr("id", "canvas")

@@ -2,47 +2,114 @@ html *
 {
     font-family: Arial !important;
 }
-#title{
-    position: absolute;
-    top:-3.6vh;
-    left:29.6vw;
-    width: 50.4vw;
-    height: 8vh;
-    text-align: center;
-    background-color: khaki;
-    padding-top: 15px;
+
+/*.grid1-item{
+    border-color: grey;
+    border-style: solid;
+    border-width: thin;
+}*/
+
+.container1{
+    display: grid;
+    grid-template-columns: 30% 50% 20% ;
+    grid-template-rows: 10% 90%;
+    width: 97vw;
+    height: 97vh;
+}
+.title { /*title*/
+    grid-column: 1 / span 3;
+    grid-row: 1;
+    height: 5%;
+    border-top-color: grey;
+    border-top-style: solid;
+    border-top-width: thin;
+}
+.col-1{
+    grid-column: 1;
+    grid-row: 2;
+    border-top-color: grey;
+    border-top-style: solid;
+    border-top-width: thin;
+}
+.col-2{
+    grid-column: 2;
+    grid-row: 2;
+    border-right-color: grey;
+    border-right-style: solid;
+    border-right-width: thin;
+    border-left-color: grey;
+    border-left-style: solid;
+    border-left-width: thin;
+    border-top-color: grey;
+    border-top-style: solid;
+    border-top-width: thin;
+}
+.col-3{
+    grid-column: 3;
+    grid-row: 2;
+    border-top-color: grey;
+    border-top-style: solid;
+    border-top-width: thin;
 }
 
-#filterscont {
-    position: absolute;
-    top:19vh;
-    right:0;
-    width: 19vw;
-    height: 58vh;
-    border-bottom-color: darkgray;
-    border-bottom-style: solid;
-    border-bottom-width: thin;
-    border-left-style: none;
-    padding-left: 4px;
-    padding-right: 4px;
+.container2{
+    grid-template-rows: 50% 50%;
+    height: 100%;
 }
+.container2, .container3{
+    display: grid;
+    grid-template-columns: auto;
+}
+.col2-1{
+    grid-row: 1;
+}
+.col2-2{
+    grid-row2: 2;
+    border-top-color: grey;
+    border-top-style: solid;
+    border-top-width: thin;
+}
+.col3-1{
+    grid-row: 1;
+    padding-bottom: 10px;
+}
+.col3-2{
+    grid-row: 2;
+    overflow-y: auto;
+    border-top-color: grey;
+    border-top-style: solid;
+    border-top-width: thin;
+}
+.col3-3{
+    padding-top: 10px;
+    grid-row: 3;
+    border-top-color: grey;
+    border-top-style: solid;
+    border-top-width: thin;
+    padding-bottom: 10px;
+}
+.col3-4{
+    padding-top: 10px;
+    grid-row2: 4;
+    border-top-color: grey;
+    border-top-style: solid;
+    border-top-width: thin;
+}
+
+#title{
+    text-align: center;
+}
+
 
 #filters{
     overflow-y: auto;
-    height: 43vh;
+    height: 35vh;
 }
 
 #legenda {
-    position: absolute;
-    top:77.95vh;
-    right:0;
-    width: 19.5vw;
-    height: 19.1vh;
-    /*border-color: darkgray;
-    border-style: solid;*/
     padding-left: 4px;
     padding-right: 4px;
-    padding-top: 15px;
+    padding-top: 5px;
 }
 #legenda > *{
     background-color: transparent;
@@ -53,10 +120,7 @@ span {
 
 
 #controls {
-    position: absolute;
     z-index: 1;
-    top:43vw;
-    left:67vw;
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -66,66 +130,21 @@ span {
     margin: 0px;
 }
 
-#canvas {
-    position: absolute;
-    top: 10vh;
-    right: 20vw;
-    width: 50.05vw;
-    height: 89vh;
-    border-left-color: darkgray;
-    border-left-style: solid;
-    border-left-width: thin;
-    border-right-color: darkgray;
-    border-right-style: solid;
-    border-right-width: thin;
-}
 
 #drugs{
-    position: absolute;
     top: 0;
     right: 0;
-    border-bottom-color: darkgray;
-    border-bottom-style: solid;
-    border-bottom-width: thin;
-    width: 19.5vw;
-    height: 18.5vh;
-    padding-left: 4px;
 }
 
-#dim_red_plot, #barplot{
-    border-bottom-style: none;
-    border-top-style: none;
-    border-left-style: none;
-}
-
-#dim_red_plot{
-    position: absolute;
-    top: 0;
-    left: 0;
-    /*border-color: darkgray;
-    border-style: solid;
-    border-bottom-style: none;*/
-    width: 29.3vw;
-    height: 50vh;
-}
-
-#barplot{
-    position: absolute;
-    top: 50vh;
-    left: 0;
-    border-top-color: darkgray;
-    border-top-style: solid;
-    border-top-width: thin;
-    width: 29.3vw;
-    height: 49vh;
+#barplot, #dim_red_plot{
+    height: 90%;
 }
 
 #drugsmessage{
-    position: absolute;
-    top: 10vh;
-    left: 40vw;
-    width: 39vw;
-    height: 5vh;
     text-align: right;
+}
+#network{
+    width: 100%;
+    height: 100%;
 }
 
