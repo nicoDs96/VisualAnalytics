@@ -56,6 +56,7 @@
 		\caption{Disease scatterplot View}
 		\label{scatter}
 	\end{figure}
+<<<<<<< HEAD
 	This view is coordinated with the Diseases Interactome View and the sidebar disease selector in the sense that we can choose a disease to display in the interactome node-link diagram by either clicking on the sidebar selector or by clicking on a point in the scatterplot. Whenever we click on the sidebar selector entry, a point in the scatterplot corresponding to the selected disease is colored with the same color of the nodes of that disease in the Interactome View. Whenever we click on a scatterplot disease, the corresponding disease's nodes are drawn in the Interactome graph and the disease entry in the sidebar selector is focused in green.\\ The view can also be considered indirectly connected to the Top 5 Centrality View since it triggers an Interactome change that on its own side triggers changes on the Top 5 Centrality View. \\ 
 	
 	\subsection*{Diseases Interactome View}
@@ -102,4 +103,50 @@
 	\bibliographystyle{unsrt}
 	\bibliography{citazioni} 
 	
+=======
+This view is coordinated with the Diseases Interactome View and the sidebar disease selector in the sense that we can choose a disease to display in the interactome node-link diagram by either clicking on the side bar selector or by clicking on a point in the scatterplot. Whenever we click on the sidebar selector entry, a point in the scatterplot corresponding to the selected disease is colored with the same color of the nodes of that disease in the Interactome View. Whenever we click on a scatterplot disease, the corresponding disease's nodes are drawn in the Interactome graph and the disease entry in the sidebar selector is focused in green.\\ The view can also be considered indirectly connected to the Top 5 Centrality View, since it triggers an Interactome change that on its own side triggers changes on the Top 5 Centrality View. \\ 
+
+\subsection*{Diseases Interactome View}
+The Disease Interactome View (Figure \ref{net}) is a node-link diagram showing all the link between genes of the selected diseases. In this view each gene is encoded as a node while each interaction between genes recorded in the interactome is encoded as a link. Each selected disease (up to five can be selected) has a color assigned to it, so basically we have encoded genes disease relation with colors.\\
+Inspired by NEMESIS\cite{ivapp19} work, we allow for degree one and degree two relationships. A degree two relationship is basically a indirect connection between two nodes with a path of length two. We obtain those connection by including not only links of the interactome with genes of the selected disease as extremes but also links containing only one gene of the selected disease as source or target.\newline All those interaction are encoded with path of length equal to the degree of the path connecting the nodes. Some but not all relationship of degree greater than two can show up as side effect of the node-link representation, but they are not explicitly computed. To make clear to the users the nature of those interaction we have used a special encoding: each gene (node) affected by a disease is colored according to a scale while each gene (node) connected with genes of that disease but not directly affected by the disease are colored of black.  This encoding allows to quickly recognize the nature of relationship among genes of a disease.\\ 
+Each time a user add one disease to the set of selected ones a color is assigned to it and a legend shows up.\\ The legend is clickable and clicks acts like selector of diseases to focus on: if we select five diseases and then click on one of them in the legend, all the nodes loose their color and their opacity is reduced except for the selected ones. \\
+Whenever the Interactome View is not empty the user can also select a drug from the appropriate picker. If the selected drug acts on some displayed genes then its corresponding node size is increased with an animation to make the user aware of the relation.\\
+
+
+\begin{figure}
+	\includegraphics[width=.95\linewidth]{network.png}
+	\caption{Disease Interactome View}
+	\label{net}
+\end{figure}
+
+Nodes in the network also allows mouse hovering. Each time we hover the mouse on a node a tooltip shows up displaying gene's id, gene' symbol and disease it is involved in as visible in Figure \ref{net}.\\
+On the right corner of the network graph it is possible  click on "Show Genes' Symbol" checkbox. This checkbox allows for displaying the name of each gene below its node. To fast distinguish those labels in dense graphs, the same color of the node(gene) is assigned to the respective label. It is important to note that this feature actually downgrades the user visualization experience of the interactome. We have decided to add it because we thought it might be useful for fast exploration or a user. However it is disabled by default and it is a full responsibility of the user to use it properly. It is highly recommended to use it after selecting a disease in the legend as shown in Figure \ref{net2} to have the view as clean as possible.\\ 
+Since it is known that node-link diagrams some times are difficult to read due to limited space and huge amount of graphics element (especially if genes symbols are also displayed), we have added the last chance possibility to drag nodes around to place them were the user prefer from a readability point of view, but we hope this feature is never needed.
+
+\begin{figure}
+	\includegraphics[width=.95\linewidth]{net2.png}
+	\caption{Gene Symbol View Explicit}
+	\label{net2}
+\end{figure}
+
+
+\subsection*{Top 5 Centrality View}
+The Top 5 Centrality View (Figure \ref{top5}) computes and show Centrality statistics for the displayed interactome. In graph theory and network analysis, indicators of centrality identify the most important vertices within a graph.  In this work we have tried to give a definition of centrality as the number of connection a gene has, hence recalling the definition of centrality for social graphs. It is computed live and only for the displayed genes, hence a node that has a great centrality in the full interactome, here can have a low centrality, meaning that it has low influence within the selected diseases. \\ The top 5 is displayed as a horizontal bar-chart where the width of a bar encodes the centrality measure. The vertical axes labels gene symbol while the horizontal axes quantifies centrality.\newline Two types of centrality means are also displayed: the first one, encoded as a vertical red line on the bar chart, represent the top 5 centrality mean; the second one, encoded as simple text, represent the overall centrality mean of the displayed interactome. With those two measures the user can understand if high centrality is a characteristic of the whole selected interactome or only of a restricted subset of genes. Namely in figure \ref{top5} we can see mean centrality of the top 5 has value 4.8 while global average of the displayed network is 1.23, that makes us understand that nodes with high centrality in the selected interactome are exceptions.\\ By hovering with mouse on the bars the user can see the relative gene in the interactome since an animation is triggered increasing the node radius.
+
+\begin{figure}
+	\includegraphics[width=.95\linewidth]{top5.png}
+	\caption{Top 5 Centrality Genes}
+	\label{top5}
+\end{figure}
+
+\subsection*{Coordination Between Views}
+
+
+\subsection*{Analytics Summary}
+
+\clearpage
+\bibliographystyle{unsrt}
+\bibliography{citazioni} 
+
+>>>>>>> parent of e44337e... borderfix
 \end{document}
