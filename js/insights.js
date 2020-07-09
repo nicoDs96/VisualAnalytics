@@ -30,6 +30,8 @@ var interactome= [];
 var useful_genes_list = new Set([]);
 
 var t0,t1, show_labels,tooltip, new_interactome;
+var font_size_normal = '70%';
+var font_size_big = '80%';
 
 /*
     VIEW SETUP
@@ -129,7 +131,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 display_nodes_labels = () =>{
     if(document.getElementById("show_labels").checked){
-        d3.selectAll(".node-label").style("display","block").style("font-size","70%");
+        d3.selectAll(".node-label").style("display","block").style("font-size",font_size_normal);
         //check for selected diseases from legenda
         if( clicked_diseases_legenda.size > 0){ // show labels only for selected elements making text bigger
             d3.selectAll(".node-label").style("display","none");
@@ -137,12 +139,12 @@ display_nodes_labels = () =>{
             clicked_diseases_legenda.forEach(disease =>{
                 d3.selectAll(`.node-label[disease~="${disease.replace(/[ ]+/g,"-")}"]`)
                     .style("display","block")
-                    .style("font-size","80%");
+                    .style("font-size",font_size_big);
             });
 
         }
     }else{
-        d3.selectAll(".node-label").style("display","none").style("font-size","70%");
+        d3.selectAll(".node-label").style("display","none").style("font-size",font_size_normal);
 
     }
 };
@@ -328,7 +330,7 @@ async function draw_graph(data){
         .text(d => d.symbol)
         .style("display",()=>{ return document.getElementById("show_labels").checked? "block":"none" })
         .style("font-family","sans-serif")
-        .style("font-size","0.65%")
+        .style("font-size",font_size_normal)
         .style("font-weight","bold")
         .style("fill", get_color)
     ;
@@ -441,13 +443,13 @@ circle_mouse_over = (d,i)=>{
     d3.selectAll(`[disease~="${d.disease}"]`)
         .style("opacity", 0.7)
         .style("fill", get_color)
-        .style("font-size", "0.75em");
+        .style("font-size", font_size_big);
 
 }
 circle_mouse_out = (d,i) => {
     d3.selectAll('.node').style("opacity", 1);
     d3.selectAll('.node-circle').style("opacity", 0.7).style("fill", get_color );
-    d3.selectAll('.node-label').style("opacity", 1).style("font-size", "0.65em");
+    d3.selectAll('.node-label').style("opacity", 1).style("font-size", font_size_normal);
     handleClickLegenda(null);
 }
 

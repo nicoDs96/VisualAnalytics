@@ -72,7 +72,7 @@ brush_control.append("input")
     .on('change',()=>{document.getElementById("show_brush").checked?d3.select("#brush-rect").style("display","block"):d3.select("#brush-rect").style("display","none")});
 brush_control.append("label")
     .attr("for", 'show_brush')
-    .text("Brush");
+    .text("Use Brush");
 
 init_brush_sp = ()=>{ //NB MUST BE CALLED AFTER draw_scatterplot function
 
