@@ -30,8 +30,8 @@ var interactome= [];
 var useful_genes_list = new Set([]);
 
 var t0,t1, show_labels,tooltip, new_interactome;
-var font_size_normal = '70%';
-var font_size_big = '80%';
+var font_size_normal = '60%';
+var font_size_big = '70%';
 var radius_normal = 5;
 var radius_big = 9;
 /*
@@ -327,15 +327,15 @@ async function draw_graph(data){
         .attr("class", "node-label")
         .attr("symbol", d => d.symbol)
         .attr("disease",  add_disease_attr)
-        .attr('dy', 24)
+        .attr('dy', 18)
         .attr("text-anchor", "middle")
+        .attr("stroke",get_color)
         .text(d => d.symbol)
         .style("display",()=>{ return document.getElementById("show_labels").checked? "block":"none" })
         .style("font-family","sans-serif")
         .style("font-size",font_size_normal)
         .style("font-weight","bold")
-        .style("fill", get_color)
-    ;
+        .style("fill", get_color);
 
 
     let nodeCircle = node.append("circle")
