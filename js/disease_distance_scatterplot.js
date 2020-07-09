@@ -49,7 +49,6 @@ grid = (g, x, y) => g
         .attr("y1", d => 0.5 + y(d))
         .attr("y2", d => 0.5 + y(d)));
 
-
 //DEFINE BEHAVIOUR ON ZOOM (RESCALE EVERYTHING)
 function zoomed() {
     const transform = d3.event.transform;
@@ -64,6 +63,17 @@ function zoomed() {
     gGrid.call(grid, zx, zy);
 }
 
+let brush_control=d3.select("#dim_red_plot").append("div");
+brush_control.append("input")
+    .attr("type","checkbox")
+    .attr("id","show_brush" )
+    .attr("name","show_brush" )
+    .attr("checked","true")
+    .on('change',()=>{document.getElementById("show_brush").checked?d3.select("#brush-rect").style("display","block"):d3.select("#brush-rect").style("display","none")});
+brush_control.append("label")
+    .attr("for", 'show_brush')
+    .text("Brush");
+
 init_brush_sp = ()=>{ //NB MUST BE CALLED AFTER draw_scatterplot function
 
     const brush = d3.brush()
@@ -71,7 +81,7 @@ init_brush_sp = ()=>{ //NB MUST BE CALLED AFTER draw_scatterplot function
         .on("end", brushed)
 
 
-    svg_sp.append('g').call(brush);
+    svg_sp.append('g').attr("id","brush-rect").call(brush);
 
     function brushed() {
         const selection = d3.event.selection;
@@ -245,6 +255,7 @@ draw_brush_selection = (brush_selected) =>{  //.replace(/[ ]+/g,"-")
             .append("p")
             .text(`Displayed Disease: ${selected_diseases.length}; Max: 5; Brushing has selected ${brush_selected.size}.\n Pick up to ${5- selected_diseases.length} to continue.`);
         let div_cb= dialog.append("div").attr("class","scrollable");
+
         brush_selected.forEach(disease=>{
             let checkbox_container = div_cb.append("div");
             checkbox_container.append("input")
@@ -298,7 +309,8 @@ handle_brush_manual_selection = ()=>{
         d3.select("#err_brush").text(`Selected ${ckd.size} instead of ${available_slots}`).style("color","red");
     }else{
         ckd.forEach(disease=>{
-            selected_diseases.push(disease);
+
+            if(! selected_diseases.includes(disease) ) selected_diseases.push(disease);
 
             d3.selectAll(".scatter-disease-path")
                 .filter( el=>el.disease===disease )
