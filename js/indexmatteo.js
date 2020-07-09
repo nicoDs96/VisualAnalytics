@@ -94,6 +94,8 @@ function initLegenda() {
         .attr("height", 15)
         .attr("fill", "black");
     last.append('span').text("Transit genes");
+
+    d3.select("#legenda").selectAll("p").style("background-color",d=> {return clicked_diseases_legenda.has(d)?"rgba(150, 150, 150, .6)":"transparent" })
     }
 }
 
@@ -103,7 +105,7 @@ function handleMouseOverLegenda() {
 
 function handleMouseOutLegenda(d) {
     if( clicked_diseases_legenda.has(d) ){
-        d3.select(this).style("background-color","rgba(150, 150, 150, .3)");
+        d3.select(this).style("background-color","rgba(150, 150, 150, .6)");
     }else{
     d3.select(this).style("background-color","transparent");
     }
@@ -382,6 +384,7 @@ function initdegreestat(){
         avleg.append('span').text("Global average")
             .on("mouseover", handleMouseoverLineGlobal)
             .on("mouseout", handleMouseoutLineGlobal);
+        avleg.append("br");
         avleg.append("svg")
             .style("padding-left", "3px")
             .attr("width", 15)
