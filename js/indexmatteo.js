@@ -57,7 +57,7 @@ function handleClickSidebar() {
 
 }
 
-function initLegenda(){
+function initLegenda() {
     d3.select("#legenda")
         .selectAll("p").remove(); //added because exit section introduce a bug in the visualization fo the legend
     let record = d3.select("#legenda")
@@ -65,7 +65,7 @@ function initLegenda(){
         .data(selected_diseases.sort())
     let p = record.enter()
         .append("p")
-        .attr("class","filterelem")
+        .attr("class", "filterelem")
         .on("mouseover", handleMouseOverLegenda)
         .on("mouseout", handleMouseOutLegenda)
         .on("click", handleClickLegenda)
@@ -74,12 +74,27 @@ function initLegenda(){
         .attr("width", 15)
         .attr("height", 15)
         .append("rect")
-            .attr("width", 15)
-            .attr("height", 15)
-            .attr("fill",d=>color(d.replace(/[ ]+/g,"-")));
-    p.append('span').text(d=>{return d});
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("fill", d => color(d.replace(/[ ]+/g, "-")));
+    p.append('span').text(d => {
+        return d
+    });
     record.exit().remove();
 
+    if (selected_diseases.length > 0){
+    let last = d3.select("#legenda").append("p")
+        .attr("class", "filterelem");
+    last.append("svg")
+        .style("padding-left", "3px")
+        .attr("width", 15)
+        .attr("height", 15)
+        .append("rect")
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("fill", "black");
+    last.append('span').text("External genes");
+    }
 }
 
 function handleMouseOverLegenda() {

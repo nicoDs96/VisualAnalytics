@@ -14,7 +14,7 @@
     top:19vh;
     right:0;
     width: 19vw;
-    height: 58vh;
+    height: 55vh;
     border-color: darkgray;
     border-style: solid;
     border-left-style: none;
@@ -24,15 +24,15 @@
 
 #filters{
     overflow-y: auto;
-    height: 43vh;
+    height: 40vh;
 }
 
 #legenda {
     position: absolute;
-    top:77.95vh;
+    top:74.95vh;
     right:0;
     width: 19.5vw;
-    height: 19.1vh;
+    height: 22.1vh;
     border-color: darkgray;
     border-style: solid;
     border-left-style: none;
