@@ -185,10 +185,29 @@ function drugsfunction(){
             numtarget = numtarget + targetnodes.size();
         }
 
+        targetnodes.each(elem=>{
+            var connectednodes = [];
+            let interaction = new_interactome.filter( el =>{ return parseInt(el.gene_ID_1) === parseInt(elem.id) || parseInt(el.gene_ID_2) === parseInt(elem.id) });
+            if(interaction !== undefined){
+                interaction.forEach(inter=>{
+                    if(parseInt(inter.gene_ID_1) !== parseInt(elem.id)){
+                        connectednodes.push(inter.gene_symbol_1);
+                    }else{
+                        connectednodes.push(inter.gene_symbol_2);
+                    }
+                });
+            }
+            console.log(elem.parent); //todo: come cazzo risalgo al padre per cambiare la tooltip??
+            console.log(elem.parentNode);
+            console.log(elem.parentElement);
+            //elem.parentNode.on("mouseover",showtooltipdrug(elem,connectednodes));
+        });
+
         targetnodes.transition(drugtransition)
             .attr("r", radius_big)
             .attr("stroke","black")
             .attr("stroke-width",3);
+
     });
 
     if(flag == 0){
@@ -210,6 +229,15 @@ function drugsfunction(){
 
 function intervalmessage() {
     d3.select("#drugsmessage").select("text").remove();
+}
+
+function showtooltipdrug(d,connectednodes){
+    tooltip.style("display", null);
+    let txt = `ID: ${d.id}<br>Symbol: ${d.symbol}<br>Involved in:${d3.select(d3.event.target).attr("disease")}
+               <br>Connected with: ${connectednodes}`;
+    tooltip.html(`<p>${txt}</p>`)
+        .style("left", (d3.event.pageX) + "px")
+        .style("top", (d3.event.pageY - 28) + "px");
 }
 
 function initdegreestat(){

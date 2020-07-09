@@ -437,7 +437,6 @@ hidetooltip = (d)=>{
 }
 
 circle_mouse_over = (d,i)=>{
-
     //reduce visibility of nodes and text
     d3.selectAll('.node-circle').style("opacity", 0.3).style("fill", "#aaaaaa");
     d3.selectAll('.node-label').style("opacity", 0.3);
