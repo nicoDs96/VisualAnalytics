@@ -32,7 +32,8 @@ var useful_genes_list = new Set([]);
 var t0,t1, show_labels,tooltip, new_interactome;
 var font_size_normal = '70%';
 var font_size_big = '80%';
-
+var radius_normal = 5;
+var radius_big = 9;
 /*
     VIEW SETUP
 * */
@@ -341,7 +342,7 @@ async function draw_graph(data){
         .attr("class", "node-circle")
         .attr("symbol", d => d.symbol)
         .attr("disease",  add_disease_attr)
-        .attr("r", 3)
+        .attr("r", radius_normal)
         //.style("fill", d =>{ color(d.disease) })
         .style("fill", get_color)
         .style("opacity", 0.7)

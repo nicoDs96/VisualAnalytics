@@ -162,7 +162,7 @@ function drugsfunction(){
         .duration(2000)
         .ease(d3.easeLinear);
     d3.selectAll(".node-circle").transition(drugtransition)
-        .attr("r", 3)
+        .attr("r", radius_normal)
         .attr("stroke",null)
         .attr("stroke-width",null);
 
@@ -186,7 +186,7 @@ function drugsfunction(){
         }
 
         targetnodes.transition(drugtransition)
-            .attr("r", 10)
+            .attr("r", radius_big)
             .attr("stroke","black")
             .attr("stroke-width",3);
     });
@@ -401,13 +401,13 @@ function initdegreestat(){
 handleMouseoverBar = (d) => {
     d3.selectAll(".node-circle").filter((n)=>{
         return d[0] === n.symbol;
-    }).attr("r",10);
+    }).attr("r",radius_big);
 }
 
 handleMouseoutBar = (d) => {
     d3.selectAll(".node-circle").filter((n)=>{
         return d[0] === n.symbol;
-    }).attr("r",3);
+    }).attr("r",radius_normal);
 }
 
 function handleMouseoverLine(){
