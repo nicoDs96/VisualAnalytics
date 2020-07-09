@@ -10,6 +10,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
 		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="dialog.css">
 	</head>
 	<body>
 
@@ -41,12 +42,14 @@
 	<div id="network"></div>
 
 	<div id="dim_red_plot">
-		<h2 style="margin-bottom: 0px">Diseases similarity:</h2>Click to draw interactome
+		<h2 style="margin-bottom: 0px">Diseases distance (with MDS):</h2>Brush to draw interactome
 	</div>
 
 	<div id="barplot">
 		<h2 style="margin-bottom: 0px">Top 5 central genes:</h2>
 	</div>
+
+	<div id="dialog_container" ><div id="brush-dialog"><p id="err_brush"></p></div></div>
 
 	<p id="drugsmessage"></p>
 		<script src="js/insights.js"></script>
