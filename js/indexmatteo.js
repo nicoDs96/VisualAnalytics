@@ -93,7 +93,7 @@ function initLegenda() {
         .attr("width", 15)
         .attr("height", 15)
         .attr("fill", "black");
-    last.append('span').text("External genes");
+    last.append('span').text("Transit genes");
     }
 }
 
