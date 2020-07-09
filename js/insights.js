@@ -38,10 +38,10 @@ var radius_big = 9;
     VIEW SETUP
 * */
 var margin = {top: 20, right: 20, bottom: 30, left: 40};
-var width = 650 - margin.left - margin.right;
-var height = 650 - margin.top - margin.bottom;
-
+var width = document.getElementById("network").offsetWidth - margin.left - margin.right;
+var height = document.getElementById("network").offsetHeight - margin.top - margin.bottom;
 var svg = d3.select("#network").append("svg")
+    .style("margin-top","5%")
     .attr("id", "canvas")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
