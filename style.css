@@ -20,6 +20,7 @@ html *
     grid-column: 1 / span 3;
     grid-row: 1;
     height: 5%;
+    padding-top: 1%;
     border-top-color: grey;
     border-top-style: solid;
     border-top-width: thin;

@@ -57,7 +57,7 @@ function handleClickSidebar() {
 
 }
 
-function initLegenda(){
+function initLegenda() {
     d3.select("#legenda")
         .selectAll("p").remove(); //added because exit section introduce a bug in the visualization fo the legend
     let record = d3.select("#legenda")
@@ -65,7 +65,7 @@ function initLegenda(){
         .data(selected_diseases.sort())
     let p = record.enter()
         .append("p")
-        .attr("class","filterelem")
+        .attr("class", "filterelem")
         .on("mouseover", handleMouseOverLegenda)
         .on("mouseout", handleMouseOutLegenda)
         .on("click", handleClickLegenda)
@@ -74,12 +74,29 @@ function initLegenda(){
         .attr("width", 15)
         .attr("height", 15)
         .append("rect")
-            .attr("width", 15)
-            .attr("height", 15)
-            .attr("fill",d=>color(d.replace(/[ ]+/g,"-")));
-    p.append('span').text(d=>{return d});
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("fill", d => color(d.replace(/[ ]+/g, "-")));
+    p.append('span').text(d => {
+        return d
+    });
     record.exit().remove();
 
+    if (selected_diseases.length > 0){
+    let last = d3.select("#legenda").append("p")
+        .attr("class", "filterelem");
+    last.append("svg")
+        .style("padding-left", "3px")
+        .attr("width", 15)
+        .attr("height", 15)
+        .append("rect")
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("fill", "black");
+    last.append('span').text("Transit genes");
+
+    d3.select("#legenda").selectAll("p").style("background-color",d=> {return clicked_diseases_legenda.has(d)?"rgba(150, 150, 150, .6)":"transparent" })
+    }
 }
 
 function handleMouseOverLegenda() {
@@ -88,7 +105,7 @@ function handleMouseOverLegenda() {
 
 function handleMouseOutLegenda(d) {
     if( clicked_diseases_legenda.has(d) ){
-        d3.select(this).style("background-color","rgba(150, 150, 150, .3)");
+        d3.select(this).style("background-color","rgba(150, 150, 150, .6)");
     }else{
     d3.select(this).style("background-color","transparent");
     }
@@ -142,20 +159,23 @@ function init_drugs_filters(){
 
 function drugsfunction(){
     let mydrug = document.getElementById("select-state").value;
+    var numtarget = 0;
     var drugtransition = d3.transition()
         .duration(2000)
         .ease(d3.easeLinear);
     d3.selectAll(".node-circle").transition(drugtransition)
-        .attr("r", 3)
+        .attr("r", radius_normal)
         .attr("stroke",null)
         .attr("stroke-width",null);
 
     if(mydrug === ""){
         console.log("null");
+        d3.select("#titledrugs").text("Drug genes: 0");
         return;
     }
     let drugrecord = drug_gene_mapping.find( record=> record["Drug Name"] === mydrug);
     var flag = 0;
+    d3.select("#titledrugs").text("Drug genes: "+drugrecord["Number of Targets"]);
     drugrecord["Target Entrez Gene IDs"].split(";").forEach(drugid=>{
 
 
@@ -164,10 +184,11 @@ function drugsfunction(){
         });
         if(targetnodes.size() > 0){
             flag = 1;
+            numtarget = numtarget + targetnodes.size();
         }
 
         targetnodes.transition(drugtransition)
-            .attr("r", 10)
+            .attr("r", radius_big)
             .attr("stroke","black")
             .attr("stroke-width",3);
     });
@@ -179,6 +200,13 @@ function drugsfunction(){
             .style("color","red")
             .text("No genes affected by "+mydrug);
         setTimeout( intervalmessage, 3000);
+    }else{
+        d3.select("#drugsmessage").select("text").remove();
+        d3.select("#drugsmessage")
+            .append("text")
+            .style("color","green")
+            .text(numtarget+" genes affected by "+mydrug);
+        setTimeout( intervalmessage, 3000);
     }
 }
 
@@ -188,7 +216,7 @@ function intervalmessage() {
 
 function initdegreestat(){
     d3.select("#barplot").select("svg").remove();
-    d3.select("#averageglobalvalue").text("");
+    d3.select("#averagelegenda").remove();
     var centrality = new Map();
     var i, first, second, third, fourth, fifth;
     var average = 0;
@@ -216,12 +244,10 @@ function initdegreestat(){
     centrality.delete(fifth[0]);
     var averageboxes = (first[1]+second[1]+third[1]+fourth[1]+fifth[1])/5;
 
-
-
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 30, bottom: 30, left: 40},
-        width = document.getElementById("barplot").offsetWidth - margin.left - margin.right,
-        height = document.getElementById("barplot").offsetHeight - 0.3*document.getElementById("barplot").offsetHeight - margin.top - margin.bottom;
+        width = 395 - margin.left - margin.right,
+        height = 250 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     var svg = d3.select("#barplot")
@@ -272,7 +298,9 @@ function initdegreestat(){
         .attr("x1", x(averageboxes))
         .attr("y1", y(0))
         .attr("x2", x(averageboxes))
-        .attr("y2", y(0));
+        .attr("y2", y(0))
+        .on("mouseover", handleMouseoverLine)
+        .on("mouseout", handleMouseoutLine);
 
     //Average value
     svg.append("text")
@@ -281,10 +309,67 @@ function initdegreestat(){
         .attr("x", x(averageboxes+0.1))
         .attr("y", y(0))
         .attr("font-size",15)
-        .attr("opacity",0);
+        .attr("opacity",0)
+        .style("display","none");
 
-    //Average global value
-    console.log( d3.select("#averageglobalvalue").text("Global average: "+average.toFixed(2)));
+    //Average line global
+    svg.append("line")
+        .attr("id","averagelineglobal")
+        .attr("stroke-width",3)
+        .attr("stroke", "black")
+        .attr("x1", x(average))
+        .attr("y1", y(0))
+        .attr("x2", x(average))
+        .attr("y2", y(0))
+        .on("mouseover", handleMouseoverLineGlobal)
+        .on("mouseout", handleMouseoutLineGlobal);
+
+    //Average value global
+    svg.append("text")
+        .text(average.toFixed(2))
+        .attr("id","averagevalueglobal")
+        .attr("x", x(average+0.1))
+        .attr("y", y(0))
+        .attr("font-size",15)
+        .attr("opacity",0)
+        .style("display","none");
+
+    //Average legenda
+    var avleg = d3.select("body").append("p")
+        .attr("id","averagelegenda")
+        .style("position", "absolute")
+        .style("top", "50vh")
+        .style("left", "18vw")
+        .style("width", "10vw")
+        .style("height", "4vh");
+
+        avleg.append("svg")
+            .style("padding-left", "3px")
+            .attr("width", 15)
+            .attr("height", 15)
+            .append("rect")
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill","black")
+            .on("mouseover", handleMouseoverLineGlobal)
+            .on("mouseout", handleMouseoutLineGlobal);
+        avleg.append('span').text("Global average")
+            .on("mouseover", handleMouseoverLineGlobal)
+            .on("mouseout", handleMouseoutLineGlobal);
+        avleg.append("br");
+        avleg.append("svg")
+            .style("padding-left", "3px")
+            .attr("width", 15)
+            .attr("height", 15)
+            .append("rect")
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill","red")
+            .on("mouseover", handleMouseoverLine)
+            .on("mouseout", handleMouseoutLine);
+        avleg.append('span').text("Top 5 average")
+            .on("mouseover", handleMouseoverLine)
+            .on("mouseout", handleMouseoutLine);
 
     // Animation
     svg.selectAll("rect")
@@ -303,19 +388,49 @@ function initdegreestat(){
         .attr("y", height+30)
         .attr("opacity",1)
         .delay(600);
+    svg.select("#averagelineglobal")
+        .transition()
+        .duration(1000)
+        .attr("y2", height+30)
+        .delay(600);
+    svg.select("#averagevalueglobal")
+        .transition()
+        .duration(1000)
+        .attr("y", height+30)
+        .attr("opacity",1)
+        .delay(600);
 }
 
 handleMouseoverBar = (d) => {
     d3.selectAll(".node-circle").filter((n)=>{
         return d[0] === n.symbol;
-    }).attr("r",10);
+    }).attr("r",radius_big);
 }
 
 handleMouseoutBar = (d) => {
     d3.selectAll(".node-circle").filter((n)=>{
         return d[0] === n.symbol;
-    }).attr("r",3);
+    }).attr("r",radius_normal);
 }
+
+function handleMouseoverLine(){
+    d3.select("#averagevalue").style("display","inline");
+}
+
+function handleMouseoutLine(){
+    d3.select("#averagevalue").style("display","none");
+}
+
+function handleMouseoverLineGlobal(){
+    d3.select("#averagevalueglobal").style("display","inline");
+}
+
+function handleMouseoutLineGlobal(){
+    d3.select("#averagevalueglobal").style("display","none");
+}
+
+
+
 
 
 

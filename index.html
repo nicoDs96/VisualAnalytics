@@ -10,12 +10,17 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
 		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="dialog.css">
 	</head>
 	<body>
 
 	<div class="container1">
 		<div class="grid1-item title">
-			<h1 id="title">Visual Analytics</h1>
+			<div id="title" >
+				<span id="titlegenes" style="font-size: 200%;">Number of genes: 0</span>
+				<span id="titlelinks" style="font-size: 200%">Number of interactions: 0</span>
+				<span id="titledrugs" style="font-size: 200%">Drug genes: 0</span>
+			</div>
 		</div>
 
 		<div class="grid1-item col-1">
@@ -70,12 +75,15 @@
 		</div>
 	</div>
 
+	<div id="dialog_container" ><div id="brush-dialog"><p id="err_brush"></p></div></div>
 
-		<script src="js/insights.js"></script>
-		<script src="js/indexmatteo.js"></script>
-		<script src="js/findpath.js"></script>
-		<script src="js/dim_red.js"></script>
-		<script src="js/disease_distance_scatterplot.js"></script>
+
+
+	<script src="js/insights.js"></script>
+	<script src="js/indexmatteo.js"></script>
+	<script src="js/findpath.js"></script>
+	<script src="js/dim_red.js"></script>
+	<script src="js/disease_distance_scatterplot.js"></script>
 
     </body>
 </html>
