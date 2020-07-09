@@ -142,6 +142,7 @@ function init_drugs_filters(){
 
 function drugsfunction(){
     let mydrug = document.getElementById("select-state").value;
+    var numtarget = 0;
     var drugtransition = d3.transition()
         .duration(2000)
         .ease(d3.easeLinear);
@@ -152,10 +153,12 @@ function drugsfunction(){
 
     if(mydrug === ""){
         console.log("null");
+        d3.select("#titledrugs").text("Drug genes: 0");
         return;
     }
     let drugrecord = drug_gene_mapping.find( record=> record["Drug Name"] === mydrug);
     var flag = 0;
+    d3.select("#titledrugs").text("Drug genes: "+drugrecord["Number of Targets"]);
     drugrecord["Target Entrez Gene IDs"].split(";").forEach(drugid=>{
 
 
@@ -164,6 +167,7 @@ function drugsfunction(){
         });
         if(targetnodes.size() > 0){
             flag = 1;
+            numtarget = numtarget + targetnodes.size();
         }
 
         targetnodes.transition(drugtransition)
@@ -178,6 +182,13 @@ function drugsfunction(){
             .append("text")
             .style("color","red")
             .text("No genes affected by "+mydrug);
+        setTimeout( intervalmessage, 3000);
+    }else{
+        d3.select("#drugsmessage").select("text").remove();
+        d3.select("#drugsmessage")
+            .append("text")
+            .style("color","green")
+            .text(numtarget+" genes affected by "+mydrug);
         setTimeout( intervalmessage, 3000);
     }
 }

@@ -240,7 +240,7 @@ clean_graph = (graph) => {
         }
     });
     new_graph.links = graph.links;
-    d3.select("#title").text("Number of genes: "+new_graph.nodes.length);
+    d3.select("#titlegenes").text("Number of genes: "+new_graph.nodes.length);
     return new_graph;
 }
 
