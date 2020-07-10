@@ -177,7 +177,6 @@ function drugsfunction(){
     var flag = 0;
     d3.select("#titledrugs").text("Drug genes: "+drugrecord["Number of Targets"]);
 
-    //TODO: start
     let drug_tgt_gns = drugrecord["Target Entrez Gene IDs"].split(";");
     var targetnodes = d3.selectAll(".node-circle").filter((d)=>{
         return drug_tgt_gns.includes(d.id);
@@ -185,9 +184,9 @@ function drugsfunction(){
     targetnodes.each((d)=>{
         d.drug = drugrecord["Drug Name"];
         d.drugTgtGenes = drug_tgt_gns;
-        d.expansion = Array.from(get_expansion(d.id)).join(); // todo: get expansion
+        d.expansion = Array.from(get_expansion(d.id)).join();
     })
-    //TODO: stop
+
 
 
     drugrecord["Target Entrez Gene IDs"].split(";").forEach(drugid=>{
@@ -205,26 +204,6 @@ function drugsfunction(){
             .attr("r", radius_big)
             .attr("stroke","black")
             .attr("stroke-width",3);
-
-
-        targetnodes.each(elem=>{
-            var connectednodes = [];
-            let interaction = new_interactome.filter( el =>{ return parseInt(el.gene_ID_1) === parseInt(elem.id) || parseInt(el.gene_ID_2) === parseInt(elem.id) });
-            if(interaction !== undefined){
-                interaction.forEach(inter=>{
-                    if(parseInt(inter.gene_ID_1) !== parseInt(elem.id)){
-                        connectednodes.push(inter.gene_symbol_1);
-                    }else{
-                        connectednodes.push(inter.gene_symbol_2);
-                    }
-                });
-            }
-            //todo: qui abbiamo elem=gene targhettato + connectednodes=lista di geni connessi
-            //ad ogni iterazione di targetnodes avremo un nuovo elemento targettato dalla
-            //stessa malattia, mentre ad ogni iterazione di  drugrecord["Target Entrez Gene IDs"]
-            //avremo un nuovo set di targetnodes su cui agire. La cosa da fare a questo punto è
-            //solamente prendere elem e connectednodes e cambiare l'handler del mouseover di elem
-        });
 
 
     });
