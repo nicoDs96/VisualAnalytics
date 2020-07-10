@@ -238,13 +238,13 @@ focus_sidebar_el = () =>{
 }
 
 draw_brush_selection = (brush_selected) =>{  //.replace(/[ ]+/g,"-")
-    let dialog = d3.select("#brush-dialog").attr("hidden","true"); //todo: clear content
+    let dialog = d3.select("#brush-dialog").attr("hidden","true");
     d3.select("#dialog_container").style("display","none");
     brush_selected.forEach(disease=>{ //remove already selected diseases from selection
        if(selected_diseases.includes(disease) ) brush_selected.delete(disease)
     });
     if(brush_selected.size<1){
-        console.warn("brush_selected is empty"); //todo: change to log
+        console.log("brush_selected is empty");
         return;
     }
     if(brush_selected.size + selected_diseases.length > 5){

@@ -176,6 +176,20 @@ function drugsfunction(){
     let drugrecord = drug_gene_mapping.find( record=> record["Drug Name"] === mydrug);
     var flag = 0;
     d3.select("#titledrugs").text("Drug genes: "+drugrecord["Number of Targets"]);
+
+    //TODO: start
+    let drug_tgt_gns = drugrecord["Target Entrez Gene IDs"].split(";");
+    var targetnodes = d3.selectAll(".node-circle").filter((d)=>{
+        return drug_tgt_gns.includes(d.id);
+    });
+    targetnodes.each((d)=>{
+        d.drug = drugrecord["Drug Name"];
+        d.drugTgtGenes = drug_tgt_gns;
+        d.expansion = Array.from(get_expansion(d.id)).join(); // todo: get expansion
+    })
+    //TODO: stop
+
+
     drugrecord["Target Entrez Gene IDs"].split(";").forEach(drugid=>{
 
 
@@ -230,6 +244,20 @@ function drugsfunction(){
             .text(numtarget+" genes affected by "+mydrug);
         setTimeout( intervalmessage, 3000);
     }
+}
+
+get_expansion = (node)=>{
+    let node_set = new Set(node);
+    let expansion = new Set();
+    node_set.forEach( (node)=>{
+        let rows = interactome.filter(el=>{ return (el.gene_ID_1 === node || el.gene_ID_2 === node) && el.gene_ID_2!==el.gene_ID_1 } );
+        if (rows.length>0){
+            rows.forEach(interaction=>{
+                interaction.gene_ID_1 === node? expansion.add(interaction.gene_ID_2): expansion.add(interaction.gene_ID_2);
+            });
+        }
+    } );
+    return expansion;
 }
 
 function intervalmessage() {

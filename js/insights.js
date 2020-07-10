@@ -427,6 +427,10 @@ showtooltip = (d)=>{
     tooltip.style("display", null);
     //console.log(); //.select(".node-circle").attr("disease")
     let txt = `ID: ${d.id}<br>Symbol: ${d.symbol}<br>Involved in:${d3.select(d3.event.target).attr("disease")}`;
+    if(d.drug!==undefined){
+        console.log("d.drug not undef");
+        txt = txt + `<br>Drug: ${d.drug}<br>Drug\'s Target Genes: ${d.drugTgtGenes}<br>Drug Expansion: [${d.expansion}]`;
+    }
     tooltip.html(`<p>${txt}</p>`)
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
