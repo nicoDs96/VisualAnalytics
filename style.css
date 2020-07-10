@@ -115,3 +115,8 @@ span {
     height: 5vh;
     text-align: right;
 }
+
+.tooltip{
+    max-width: 30%;
+    overflow-x: auto;
+}
