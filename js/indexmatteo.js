@@ -187,6 +187,11 @@ function drugsfunction(){
             numtarget = numtarget + targetnodes.size();
         }
 
+        targetnodes.transition(drugtransition)
+            .attr("r", radius_big)
+            .attr("stroke","black")
+            .attr("stroke-width",3);
+
 
         targetnodes.each(elem=>{
             var connectednodes = [];
@@ -200,19 +205,13 @@ function drugsfunction(){
                     }
                 });
             }
-            console.log("tg node");
-            console.log(targetnodes.node());
-            console.log('tg parent node'); //todo: come cazzo risalgo al padre per cambiare la tooltip??
-            console.log(targetnodes.node().parentNode);
-            console.log('tg parent el');
-            console.log(targetnodes.node().parentElement);
-            //elem.parentNode.on("mouseover",showtooltipdrug(elem,connectednodes));
+            //todo: qui abbiamo elem=gene targhettato + connectednodes=lista di geni connessi
+            //ad ogni iterazione di targetnodes avremo un nuovo elemento targettato dalla
+            //stessa malattia, mentre ad ogni iterazione di  drugrecord["Target Entrez Gene IDs"]
+            //avremo un nuovo set di targetnodes su cui agire. La cosa da fare a questo punto è
+            //solamente prendere elem e connectednodes e cambiare l'handler del mouseover di elem
         });
 
-        targetnodes.transition(drugtransition)
-            .attr("r", radius_big)
-            .attr("stroke","black")
-            .attr("stroke-width",3);
 
     });
 
@@ -235,15 +234,6 @@ function drugsfunction(){
 
 function intervalmessage() {
     d3.select("#drugsmessage").select("text").remove();
-}
-
-function showtooltipdrug(d,connectednodes){
-    tooltip.style("display", null);
-    let txt = `ID: ${d.id}<br>Symbol: ${d.symbol}<br>Involved in:${d3.select(d3.event.target).attr("disease")}
-               <br>Connected with: ${connectednodes}`;
-    tooltip.html(`<p>${txt}</p>`)
-        .style("left", (d3.event.pageX) + "px")
-        .style("top", (d3.event.pageY - 28) + "px");
 }
 
 function initdegreestat(){
