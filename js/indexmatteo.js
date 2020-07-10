@@ -183,8 +183,9 @@ function drugsfunction(){
     });
     targetnodes.each((d)=>{
         d.drug = drugrecord["Drug Name"];
-        d.drugTgtGenes = drug_tgt_gns;
-        d.expansion = Array.from(get_expansion(d.id)).join();
+        d.drugTgtGenes = drugrecord["Traget Gene Names"];
+        d.expansion = Array.from(get_expansion(d.id)).join(); // todo: get expansion
+
     })
 
 
@@ -232,7 +233,7 @@ get_expansion = (node)=>{
         let rows = interactome.filter(el=>{ return (el.gene_ID_1 === node || el.gene_ID_2 === node) && el.gene_ID_2!==el.gene_ID_1 } );
         if (rows.length>0){
             rows.forEach(interaction=>{
-                interaction.gene_ID_1 === node? expansion.add(interaction.gene_ID_2): expansion.add(interaction.gene_ID_2);
+                interaction.gene_ID_1 === node? expansion.add(interaction.gene_symbol_2): expansion.add(interaction.gene_symbol_1);
             });
         }
     } );
