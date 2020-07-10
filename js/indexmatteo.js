@@ -187,6 +187,7 @@ function drugsfunction(){
             numtarget = numtarget + targetnodes.size();
         }
 
+
         targetnodes.each(elem=>{
             var connectednodes = [];
             let interaction = new_interactome.filter( el =>{ return parseInt(el.gene_ID_1) === parseInt(elem.id) || parseInt(el.gene_ID_2) === parseInt(elem.id) });
@@ -199,9 +200,12 @@ function drugsfunction(){
                     }
                 });
             }
-            console.log(elem.parent); //todo: come cazzo risalgo al padre per cambiare la tooltip??
-            console.log(elem.parentNode);
-            console.log(elem.parentElement);
+            console.log("tg node");
+            console.log(targetnodes.node());
+            console.log('tg parent node'); //todo: come cazzo risalgo al padre per cambiare la tooltip??
+            console.log(targetnodes.node().parentNode);
+            console.log('tg parent el');
+            console.log(targetnodes.node().parentElement);
             //elem.parentNode.on("mouseover",showtooltipdrug(elem,connectednodes));
         });
 
